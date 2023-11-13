@@ -12,6 +12,16 @@
 #include <sys/wait.h>
 #include <sys/stat.h>
 
+
+
+
+/**anayzer.c *////to be removed
+
+#include "shell_info.h"
+#include <string_utils.h>
+
+
+
 /**
  * struct listint_s - singly linked list
  * @n: integer
@@ -40,6 +50,14 @@ typedef struct list_s
     unsigned int len;
     struct list_s *next;
 } list_t;
+
+
+struct info {
+    char **args;  /* Assuming this holds the tokenized string */
+};
+
+char* _getenv(const char *var, const struct info *info);
+
 
 #define WRITE_BUF_SIZE 1024  /* Define the buffer size for output */
 #define BUF_FLUSH '\0'
@@ -80,5 +98,91 @@ int custom_str_cmp(char *string1, char *string2);
 char **strtow(char *str, char d);
 char **custom_strtow2(char *str, char d);
 
+/* placeholders.c */
 
+void evaluateChainCondition(info_struct *data, char *buffer, size_t *position,
+                size_t startIndex, size_t length);
+int check_delimiter(info_t *info, char *buf, int *pos);
+int process_variables(struct info *info);
+int update_string(char **str, const char *new_str);
+int update_aliases(parameter_info_t *info);
+
+/* calloc.c */
+
+char *custom_memset(char *mem, char byte, unsigned int size);
+void* resize_memory(void* old_ptr, size_t old_size, size_t new_size);
+void freeStringArray(char **ff);
+
+/* analyzer.c */
+
+char *duplicateSubstring(const char *sourceStr, int startIndex, int endIndex);
+char *locatePath(const char *pathString, const char *command);
+int isExecutableCommand(ShellInfo *shellInfo, char *filePath);
+
+/* memory_utilis.c */
+
+int ffrees(void **pointer);
+
+/* custom_getline.c */
+
+ssize_t bufferChainedCommands(ShellInfo *shellInfo, char **buffer, size_t *bufferLength);
+ssize_t getNextCommand(ShellInfo *shellInfo, char **command, size_t *commandLen);
+ssize_t readBuffer(ShellInfo *shellInfo, char *buffer, size_t *size);
+int getLine(ShellInfo *shellInfo, char **buffer, size_t *size);
+void customSigintHandler(__attribute__((unused)) int signalNumber);
+
+/* info_handler.c */
+
+void reset_info(info_t *info);
+void initialize_info(info_t *info, char **av);
+void release_info(info_t *info, int free_all);
+
+/* getenv.c */
+
+int set_environment_variable(info_t *info, char *variable, char *value);
+int _unsetenv(info_t *info, char *variable);
+char **duplicate_environ(info_t *info);
+
+/* exit.c */
+
+char *_strchr(char *s, char c);
+char *_strncat(char *dest, char *src, int n);
+char *_strncpy(char *dest, char *src, int n);
+
+/* error1.c */
+
+int _custom_atoi(char *s);
+void print_error(info_t *info, char *error_type);
+int custom_print_d(int num, int output_fd);
+char *custom_number_conversion(long int input_num, int target_base, int conversion_flags);
+void removeComments(char *inputString);
+
+/* error.c */
+
+int _custom_putsfd(char *str, int fd);
+int writeCharToFileDescriptor(char character, int fileDescriptor);
+int custom_eputchar(char c);
+void _custom_eputs(char *str);
+
+/* environs.c */
+
+int create_env_list(info_t *info);
+int removeEnvironmentVariable(info_t *argumentInfo);
+int _mysetenv(info_t *info);
+char *_getenv(info_t *info, const char *variable_name);
+int _myenv(info_t *info);
+
+/* builtsin1.c */
+
+int displayCommandHistory(ShellInfo *shellInfo);
+int mimicAlias(ShellInfo *shellInfo);
+int display_alias(list_t *alias_node);
+int set_alias(info_t *info, char *alias_str);
+int unset_alias(info_t *info, char *str);
+
+/* builtsin.c */
+
+int _myexit(info_t *info);
+int custom_cd(info_t *info);
+int _myhelp(info_t *info);
 #endif

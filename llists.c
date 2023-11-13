@@ -67,33 +67,37 @@ node_t *append_node(node_t **head, const char *str, int num)
 	return (new_node);
 }
 
+#include <unistd.h>
+#include "your_node_struct_definition.h"  // Include the definition of your Node structure
+
 /**
- * print_strings_in_list - prints only the string
- * elements of a linked list
+ * write_strings_in_list - writes only the string
+ * elements of a linked list to standard output
  * @head: pointer to the first node
  *
  * Return: The total count of nodes in the linked
- * list processed during the print operation
+ * list processed during the write operation
  */
-size_t print_strings_in_list(const Node *head)
+size_t write_strings_in_list(const Node *head)
 {
-		size_t count = 0;
+    size_t count = 0;
 
-		while (head != NULL)
-		{
-				if (head->data != NULL)
-				{
-						printf("%s\n", head->data);
-				}
-				else
-				{
-						printf("(nil)\n");
-				}
-				head = head->next;
-				count++;
-		}
+    while (head != NULL)
+    {
+        if (head->data != NULL)
+        {
+            write(1, head->data, _strlen(head->data));
+            write(1, "\n", 1);
+        }
+        else
+        {
+            write(1, "(nil)\n", 6);
+        }
+        head = head->next;
+        count++;
+    }
 
-		return (count);
+    return count;
 }
 
 
@@ -157,4 +161,25 @@ void free_listint(listint_t *head)
 						free(current);
 						current = next_node;
 				}
+}
+
+
+
+
+/**
+ * free_listint - Frees a listint_t list.
+ * @head: Pointer to the head of the linked list to be freed.
+ */
+void free_listint(listint_t *head)
+{
+    listint_t *current_node, *next_node;
+
+    current_node = head;
+
+    while (current_node != NULL)
+    {
+        next_node = current_node->next;
+        free(current_node);
+        current_node = next_node;
+    }
 }
