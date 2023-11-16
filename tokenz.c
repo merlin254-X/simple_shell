@@ -5,7 +5,6 @@
  * strtow - Splits a string into words based on a given delimiter
  * @str: The input string
  * @d: The delimiter string
- *
  * Return: A pointer to an array of strings, or NULL on failure
  */
 char **strtow(char *str, char d)
