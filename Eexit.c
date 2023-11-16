@@ -32,7 +32,8 @@ char *_strncpy(char *dest, char *src, int m)
  * @dest: pointer to the destination string
  * @src: pointer to the source string
  * @k: maximum number of characters from src to concatenate
- * Return: a pointer to the resulting concatenated string, starting at the original address of dest
+ * Return: a pointer to the resulting concatenated
+ * string, starting at the original address of dest
  */
 char *_strncat(char *dest, char *src, int k)
 {

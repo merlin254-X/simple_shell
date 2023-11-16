@@ -15,11 +15,6 @@
 
 
 
-/**anayzer.c *////to be removed
-
-#include "shell_info.h"
-#include <string_utils.h>
-
 
 
 /**
@@ -32,8 +27,8 @@
  */
 typedef struct listint_s
 {
-    int n;
-    struct listint_s *next;
+	int n;
+	struct listint_s *next;
 } listint_t;
 
 /**
@@ -46,46 +41,73 @@ typedef struct listint_s
  */
 typedef struct list_s
 {
-    char *str;
-    unsigned int len;
-    struct list_s *next;
+	char *str;
+	unsigned int len;
+	struct list_s *next;
 } list_t;
 
+/**
+ * struct info - structure representing information relating to shell command
+ * @args: arry of strings representing information relating to shell
+ */
+typedef struct info
+{
+	char *args;
+} info;
 
-struct info {
-    char **args;  /* Assuming this holds the tokenized string */
-};
+/**
+ * struct shellinfo - structure containing information specific to a shell
+ * @args: array of string representing information relating to shell
+ */
+typedef struct shellinfo
+{
+	char *args;
+} shellinfo;
 
-char* _getenv(const char *var, const struct info *info);
+/**
+ * struct data - structure containing generic data
+ * @args: array of strings representing data
+ */
+typedef struct data
+{
+	char *args;
+} data;
+
+char *_getenv(const char *var, const struct info *info);
 
 
 #define WRITE_BUF_SIZE 1024  /* Define the buffer size for output */
 #define BUF_FLUSH '\0'
 #define DELIMITER ' '
 
+#define CMD_AND
+#define CMD_OR
 
-/* llists.c */
+
+/* list_list.c */
 Node *add_node_at_start(Node **head_ref, const char *data, int index);
 node_t *append_node(node_t **head, const char *str, int num);
 size_t print_strings_in_list(const Node *head);
 int delete_node_at_the_given_index(Node **head_ref, unsigned int index);
 void free_listint(listint_t *head);
 
-/* llists5.c */
+/* list_list1.c */
+
 size_t print_listint(const listint_t *k);
 ssize_t find_index_of_node(Node *head_node, Node *target_node);
-Node *find_node_with_prefix(Node *head_node, char *search_prefix, char next_character);
+Node *find_node_with_prefix(Node *head_node,
+		char *search_prefix, char next_character);
 char **convert_list_to_strings(ListNode *head_node);
 size_t get_list_length(const Node *head_node);
 
-/* sstring1.c */
+/* str_string1.c */
 
 char *_strncpy(char *dest, char *src, int n);
 char *custom_strdup(const char *string);
 void custom_puts(const char *str);
 int custom_putchar(char s);
 
-/* sstring.c */
+/* str_string.c */
 
 int _strlen(char *s);
 char *_strcat(char *dest, char *src);
@@ -98,22 +120,22 @@ int custom_str_cmp(char *string1, char *string2);
 char **strtow(char *str, char d);
 char **custom_strtow2(char *str, char d);
 
-/* placeholders.c */
+/* Pplaceholders.c */
 
 void evaluateChainCondition(info_struct *data, char *buffer, size_t *position,
-                size_t startIndex, size_t length);
+				size_t startIndex, size_t length);
 int check_delimiter(info_t *info, char *buf, int *pos);
 int process_variables(struct info *info);
 int update_string(char **str, const char *new_str);
 int update_aliases(parameter_info_t *info);
 
-/* calloc.c */
+/* ca-calloc.c */
 
 char *custom_memset(char *mem, char byte, unsigned int size);
-void* resize_memory(void* old_ptr, size_t old_size, size_t new_size);
+void *resize_memory(void *vold_ptr, size_t old_size, size_t new_size);
 void freeStringArray(char **ff);
 
-/* analyzer.c */
+/*analy- analyzer.c */
 
 char *duplicateSubstring(const char *sourceStr, int startIndex, int endIndex);
 char *locatePath(const char *pathString, const char *command);
@@ -125,8 +147,10 @@ int ffrees(void **pointer);
 
 /* custom_getline.c */
 
-ssize_t bufferChainedCommands(ShellInfo *shellInfo, char **buffer, size_t *bufferLength);
-ssize_t getNextCommand(ShellInfo *shellInfo, char **command, size_t *commandLen);
+ssize_t bufferChainedCommands(ShellInfo *shellInfo, char **buffer,
+		size_t *bufferLength);
+ssize_t getNextCommand(ShellInfo *shellInfo, char **command,
+		size_t *commandLen);
 ssize_t readBuffer(ShellInfo *shellInfo, char *buffer, size_t *size);
 int getLine(ShellInfo *shellInfo, char **buffer, size_t *size);
 void customSigintHandler(__attribute__((unused)) int signalNumber);
@@ -137,34 +161,35 @@ void reset_info(info_t *info);
 void initialize_info(info_t *info, char **av);
 void release_info(info_t *info, int free_all);
 
-/* getenv.c */
+/* Ggetenv.c */
 
 int set_environment_variable(info_t *info, char *variable, char *value);
 int _unsetenv(info_t *info, char *variable);
 char **duplicate_environ(info_t *info);
 
-/* exit.c */
+/* Eexit.c */
 
 char *_strchr(char *s, char c);
 char *_strncat(char *dest, char *src, int n);
 char *_strncpy(char *dest, char *src, int n);
 
-/* error1.c */
+/* er_error1.c */
 
 int _custom_atoi(char *s);
 void print_error(info_t *info, char *error_type);
 int custom_print_d(int num, int output_fd);
-char *custom_number_conversion(long int input_num, int target_base, int conversion_flags);
+char *custom_number_conversion(long int input_num, int target_base,
+		int conversion_flags);
 void removeComments(char *inputString);
 
-/* error.c */
+/* er_error.c */
 
 int _custom_putsfd(char *str, int fd);
 int writeCharToFileDescriptor(char character, int fileDescriptor);
 int custom_eputchar(char c);
 void _custom_eputs(char *str);
 
-/* environs.c */
+/* Envvirons.c */
 
 int create_env_list(info_t *info);
 int removeEnvironmentVariable(info_t *argumentInfo);

@@ -6,7 +6,7 @@ include "shell.h"
  * @k: character input
  * Return: 1 if alphabet, 0 if otherwise
  */
-int _isalpha(int k)
+int _isalphabet(int k)
 {
 	if (k >= 'a' && k <= 'z')
 	{
@@ -14,7 +14,7 @@ int _isalpha(int k)
 	}
 	else if (k >= 'A' && k <= 'Z')
 	{
-		return (1);		
+		return (1);
 	}
 	else
 	{
@@ -36,8 +36,8 @@ int isDelimeter(char character, char *delimiterString)
 		{
 			return (1);
 		}
-			
-	
+
+
 	}
 	return (0);
 }
@@ -78,7 +78,7 @@ int strToInt(char *str)
  * @data: struct containing relevant information
  * Return: 1 if in interactive mode, 0 if otherwise
  */
-int checkIinteractiveMode(info_t *data)
+int checkInteractiveMode(info_t *data)
 {
 	if (isatty(STDIN_FILENO))
 	{

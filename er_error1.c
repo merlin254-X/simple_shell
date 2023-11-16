@@ -13,25 +13,28 @@ void removeComments(char *inputString)
 
 	for (int index = 0; inputString[index] != '\0'; index++)
 	{
-		if (inputString[index] == '#' && (index == 0 || inputString[index - 1] == ' '))
+		if (inputString[index] == '#' &&
+				(index == 0 || inputString[index - 1] == ' '))
 		{
 			inputString[index] = '\0';
 			break;
 		}
 	}
-	return;
+
 }
 
 /**
- * custom_number_conversion - converts a long integer to a string in a specified base
+ * custom_number_conversion - converts a long integer to a
+ * string in a specified base
  * @input_num: the number to be converted
  * @target_base: the base to which the number should be converted
  * @conversion_flags: flags to control the conversion process
  * Return: a pointer to the resulting string
  */
-char *custom_number_conversion(long int input_num, int target_base, int coversion_flags)
+char *custom_number_conversion(long int input_num,
+		int target_base, int conversion_flags)
 {
-	static char character_set[] = "0123456789abcdef";
+	static const char character_set[] = "0123456789abcdef";
 	static char result_buffer[33];
 	char *result_ptr = &result_buffer[32];
 	*result_ptr = '\0';
@@ -44,7 +47,7 @@ char *custom_number_conversion(long int input_num, int target_base, int coversio
 	if (input_num < 0 && target_base == 10)
 	{
 		conversion_flags |= 1;
-		input_num = -input_num;		
+		input_num = -input_num;
 	}
 
 	while (input_num != 0)
@@ -152,7 +155,6 @@ int _custom_atoi(char s)
 	{
 		return (-1);
 	}
-
 	while (*s != '\0')
 	{
 		if (isdigit(*s))
@@ -163,7 +165,6 @@ int _custom_atoi(char s)
 			{
 				return (-1);
 			}
-
 			result = result * 10 + digit;
 			started = 1;
 		}
@@ -173,7 +174,6 @@ int _custom_atoi(char s)
 			{
 				break;
 			}
-
 			sign = (*s == '+') ? : -1;
 		}
 		else
@@ -183,8 +183,8 @@ int _custom_atoi(char s)
 				break;
 			}
 		}
-		s++;		
+		s++;
 	}
 
-	return (sign *result);
+	return (sign * result);
 }

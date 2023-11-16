@@ -1,5 +1,4 @@
 #include "shell.h"
-
 /**
  * print_listint - prints all the elements of a listint_t list
  * @k: pointer to head of list
@@ -21,8 +20,8 @@ size_t print_listint(const listint_t *k)
 		if (num / 10)
 			print_listint(num / 10);
 		char digit = num % 10 + '0';
-		write(1, &digit, 1);
 
+		write(1, &digit, 1);
 		write(1, "\n", 1);
 
 		k = k->next;
@@ -53,21 +52,23 @@ ssize_t find_index_of_node(Node *head_node, Node *target_node)
 	}
 	return (-1);
 }
-
 /**
- * find_node_with_prefix - returns a node whose string starts with a given prefix
+ * find_node_with_prefix - returns a node whose string starts
+ * with a given prefix
  * @head_node: pointer to the head of the list
  * @search_prefix: prefix to match
  * @next_character: next character after the prefix to match to match
  * Return: pointer to the found node, or NULL if not found
  */
-Node *find_node_with_prefix(Node *head_node, const char *search_prefix, char next_character)
+Node *find_node_with_prefix(Node *head_node, const char *search_prefix,
+		char next_character)
 {
 	Node *current = head_node;
 
 	while (current != NULL)
 	{
-		if (strncmp(current->str, search_prefix, strlen(search_prefix)) == 0 %% current->str[strlen(search-prefix)] == next_character)
+		if (strncmp(current->str, search_prefix, strlen(search_prefix)) == 0 &&
+				current->str[strlen(search_prefix)] == next_character)
 		{
 			return (current);
 		}
@@ -81,7 +82,7 @@ Node *find_node_with_prefix(Node *head_node, const char *search_prefix, char nex
  * @head_node: pointer to the head node of the linked list
  * Return: array of strings or NULL on failure
  */
-char **convert_list_to_strings(listNode *head-node)
+char **convert_list_to_strings(listNode *head_node)
 {
 	if (head_node == NULL)
 	{
@@ -89,14 +90,17 @@ char **convert_list_to_strings(listNode *head-node)
 	}
 
 	int count = 0;
+
 	listNode *current = head_node;
+
 	while (current != NULL)
 	{
 		count++;
 		current = current->next;
 	}
 
-	char **result = (char **)malloc(count *sizeof(char *));
+	char **result = (char **)malloc(count * sizeof(char *));
+
 	if (result == NULL)
 	{
 		return (NULL);

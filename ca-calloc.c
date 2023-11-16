@@ -22,9 +22,10 @@ void freeStringArray(char **ff)
 /**
  * resize_memory - resizes memory allocation from old block to a new block
  * @old_ptr: pointer to the old block of memory
- * @old_ptr: size of the old block
- * @new_ptr: size of the new block
- * Return: a pointer to the new memory block if an error occurs during the creation of the new block
+ * @old_size: size of the old block
+ * @new_size: size of the new block
+ * Return: a pointer to the new memory block if an error occurs
+ * during the creation of the new block
  *
  */
 void *resize_memory(void *old_ptr, size_t old_size, size_t new_size)
@@ -39,6 +40,7 @@ void *resize_memory(void *old_ptr, size_t old_size, size_t new_size)
 	if (old_ptr != NULL && new_size > 0)
 	{
 		size_t min_size = (old_size < new_size) ? old_size : new_size;
+
 		memcpy(new_ptr, old_ptr, min_size);
 	}
 

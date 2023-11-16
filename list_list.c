@@ -9,7 +9,8 @@
  */
 Node *add_node_at_start(Node **head_ref, const char *data, int index)
 	{
-		Node *new-node = (Node *)malloc(sizeof(Node));
+		Node *new_node = (Node *)malloc(sizeof(Node));
+
 		if (new_node == NULL)
 		{
 			return (NULL);
@@ -32,12 +33,14 @@ Node *add_node_at_start(Node **head_ref, const char *data, int index)
  */
 node_t *append_node(node_t **head, const char *str, int num)
 	{
-		if (head == NULL || str === NULL)
+		if (head == NULL || str == NULL)
 		{
 			return (NULL);
 		}
 		node_t *new_node == (node_t *)malloc(sizeof(node_t));
+
 		if (new_node == NULL)
+
 		{
 			return (NULL);
 		}
@@ -53,6 +56,7 @@ node_t *append_node(node_t **head, const char *str, int num)
 		}
 
 		node_t *current_node = *head;
+
 		while (current_node->next != NULL)
 		{
 			current_node = current_node->next;
@@ -77,7 +81,7 @@ size_t write_strings_in_list(const Node *head)
 
 	while (head != NULL)
 	{
-		if (head->data != NULL )
+		if (head->data != NULL)
 		{
 			write(1, head->data, _strlen(head->data));
 			write(1, "\n", 1);
@@ -90,9 +94,8 @@ size_t write_strings_in_list(const Node *head)
 		count++;
 	}
 	return (count);
-
 }
- 
+
 /**
  * delete_node_at_the_given_index - deletes a node at the given
  * index in a linked list
@@ -106,9 +109,9 @@ int delete_node_at_the_given_index(Node **head_ref, unsigned int index)
 	Node *current = *head_ref;
 	Node *prev = NULL;
 
-	if (current = NULL)
+	if (current == NULL)
 	{
-		return (0)
+		return (0);
 	}
 
 	if (index == 0)
