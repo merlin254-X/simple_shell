@@ -9,10 +9,10 @@
  */
 int ffrees(void **pointer)
 {
-  if (pointer == NULL || *pointer == NULL)
-    return (0);
+	if (pointer == NULL || *pointer == NULL)
+		return (0);
 
-  free(*pointer);
-  *pointer = NULL;
-  return (1);
+	free(*pointer);
+	*pointer = NULL;
+	return (1);
 }
