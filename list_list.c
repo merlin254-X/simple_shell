@@ -31,13 +31,13 @@ Node *add_node_at_start(Node **head_ref, const char *data, int index)
  *
  * Return: pointer to the newly appended node, or NULL on failure
  */
-node_t *append_node(node_t **head, const char *str, int num)
+Node *append_node(Node **head, const char *str, int num)
 	{
 		if (head == NULL || str == NULL)
 		{
 			return (NULL);
 		}
-		node_t *new_node == (node_t *)malloc(sizeof(node_t));
+		Node *new_node == (Node *)malloc(sizeof(Node));
 
 		if (new_node == NULL)
 
@@ -55,7 +55,7 @@ node_t *append_node(node_t **head, const char *str, int num)
 			return (new_node);
 		}
 
-		node_t *current_node = *head;
+		Node *current_node = *head;
 
 		while (current_node->next != NULL)
 		{
@@ -116,7 +116,7 @@ int delete_node_at_the_given_index(Node **head_ref, unsigned int index)
 
 	if (index == 0)
 	{
-		*head_ref = curent->next;
+		*head_ref = current->next;
 		free(current);
 		return (1);
 	}

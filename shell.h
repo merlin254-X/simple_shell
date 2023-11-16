@@ -53,7 +53,9 @@ typedef struct list_s
 typedef struct info
 {
 	char *args;
-} info;
+	char *env;
+	int someField;
+} info_t;
 
 /**
  * struct shellinfo - structure containing information specific to a shell
@@ -73,7 +75,15 @@ typedef struct data
 	char *args;
 } data;
 
-char *_getenv(const char *var, const struct info *info);
+
+typedef struct Node
+{
+	int data;
+	struct Node* next;
+} Node;
+
+
+
 
 
 #define WRITE_BUF_SIZE 1024  /* Define the buffer size for output */
@@ -86,7 +96,7 @@ char *_getenv(const char *var, const struct info *info);
 
 /* list_list.c */
 Node *add_node_at_start(Node **head_ref, const char *data, int index);
-node_t *append_node(node_t **head, const char *str, int num);
+Node *append_node(Node **head, const char *str, int num);
 size_t print_strings_in_list(const Node *head);
 int delete_node_at_the_given_index(Node **head_ref, unsigned int index);
 void free_listint(listint_t *head);
@@ -97,7 +107,7 @@ size_t print_listint(const listint_t *k);
 ssize_t find_index_of_node(Node *head_node, Node *target_node);
 Node *find_node_with_prefix(Node *head_node,
 		char *search_prefix, char next_character);
-char **convert_list_to_strings(ListNode *head_node);
+char **convert_list_to_strings(Node *head_node);
 size_t get_list_length(const Node *head_node);
 
 /* str_string1.c */
@@ -122,12 +132,12 @@ char **custom_strtow2(char *str, char d);
 
 /* Pplaceholders.c */
 
-void evaluateChainCondition(info_struct *data, char *buffer, size_t *position,
+void evaluateChainCondition(info_t *data, char *buffer, size_t *position,
 				size_t startIndex, size_t length);
 int check_delimiter(info_t *info, char *buf, int *pos);
 int process_variables(struct info *info);
 int update_string(char **str, const char *new_str);
-int update_aliases(parameter_info_t *info);
+int update_aliases(info_t *info);
 
 /* ca-calloc.c */
 
@@ -139,7 +149,7 @@ void freeStringArray(char **ff);
 
 char *duplicateSubstring(const char *sourceStr, int startIndex, int endIndex);
 char *locatePath(const char *pathString, const char *command);
-int isExecutableCommand(ShellInfo *shellInfo, char *filePath);
+int isExecutableCommand(shellinfo *shellInfo, char *filePath);
 
 /* memory_utilis.c */
 
@@ -147,12 +157,12 @@ int ffrees(void **pointer);
 
 /* custom_getline.c */
 
-ssize_t bufferChainedCommands(ShellInfo *shellInfo, char **buffer,
+ssize_t bufferChainedCommands(shellinfo *shellInfo, char **buffer,
 		size_t *bufferLength);
-ssize_t getNextCommand(ShellInfo *shellInfo, char **command,
+ssize_t getNextCommand(shellinfo *shellInfo, char **command,
 		size_t *commandLen);
-ssize_t readBuffer(ShellInfo *shellInfo, char *buffer, size_t *size);
-int getLine(ShellInfo *shellInfo, char **buffer, size_t *size);
+ssize_t readBuffer(shellinfo *shellInfo, char *buffer, size_t *size);
+int getLine(shellinfo *shellInfo, char **buffer, size_t *size);
 void customSigintHandler(__attribute__((unused)) int signalNumber);
 
 /* info_handler.c */
@@ -199,8 +209,8 @@ int _myenv(info_t *info);
 
 /* builtsin1.c */
 
-int displayCommandHistory(ShellInfo *shellInfo);
-int mimicAlias(ShellInfo *shellInfo);
+int displayCommandHistory(shellinfo *shellInfo);
+int mimicAlias(shellinfo *shellInfo);
 int display_alias(list_t *alias_node);
 int set_alias(info_t *info, char *alias_str);
 int unset_alias(info_t *info, char *str);
@@ -210,4 +220,8 @@ int unset_alias(info_t *info, char *str);
 int _myexit(info_t *info);
 int custom_cd(info_t *info);
 int _myhelp(info_t *info);
+
+/* Main.c */
+
+
 #endif

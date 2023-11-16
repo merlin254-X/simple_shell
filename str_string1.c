@@ -34,7 +34,9 @@ char *_strncpy(char *dest, char *src, int n)
 char *custom_strdup(const char *string)
 {
 char *new_string = NULL;
+        size_t i;
 	size_t length = 0;
+	
 
 	while (string[length] != '\0')
 	{
@@ -47,7 +49,7 @@ char *new_string = NULL;
 		return (NULL);
 	}
 
-	for (size_t i = 0; i < length; i++)
+	for (i = 0; i < length; i++)
 	{
 		new_string[i] = string[i];
 	}
@@ -68,7 +70,7 @@ void custom_puts(const char *str)
 
 	while (*str != '\0')
 	{
-		_putchar(*str);
+		putchar(*str);
 		str++;
 	}
 }
@@ -95,5 +97,5 @@ int custom_putchar(char s)
 		buffer[index++] = s;
 	}
 
-	return (1)
+	return (1);
 }

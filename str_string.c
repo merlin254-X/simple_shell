@@ -58,7 +58,7 @@ char *custom_starts_with(const char *str, const char *substr)
 			return (NULL);
 		}
 		substr++;
-		s++;
+		str++;
 	}
 	return ((char *)str);
 }

@@ -103,7 +103,7 @@ int _mysetenv(info_t *info)
  */
 int removeEnvironmentVariable(info_t *argumentInfo)
 {
-	char *variabeName;
+	char *variableName;
 	int i, j;
 	size_t nameLength;
 
@@ -111,12 +111,12 @@ int removeEnvironmentVariable(info_t *argumentInfo)
 			argumentInfo->arg[0] == NULL)
 		return (0);
 
-	variableName = argumentInfo->arg[0];
+	variableName = argumentInfo->args[0];
 	nameLength = _strlen(variableName);
 
 	for (i = 0; environ[i] != NULL; i++)
 	{
-		if (_strncmp(variableName, environ[i],
+		if (strncmp(variableName, environ[i],
 					nameLength) == 0 && environ[i][nameLength] == '=')
 		{
 			free(environ[i]);

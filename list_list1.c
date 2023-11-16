@@ -82,7 +82,7 @@ Node *find_node_with_prefix(Node *head_node, const char *search_prefix,
  * @head_node: pointer to the head node of the linked list
  * Return: array of strings or NULL on failure
  */
-char **convert_list_to_strings(listNode *head_node)
+char **convert_list_to_strings(Node *head_node)
 {
 	if (head_node == NULL)
 	{
@@ -91,7 +91,7 @@ char **convert_list_to_strings(listNode *head_node)
 
 	int count = 0;
 
-	listNode *current = head_node;
+	Node *current = head_node;
 
 	while (current != NULL)
 	{

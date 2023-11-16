@@ -75,49 +75,46 @@ int writeHistoryToFile(UserInfo *userInfo)
  */
 int readHistoryFromFile(UserInfo *userInfo)
 {
-	FILE *filePointer;
-	char *lineBuffer = NULL;
-	size_t bufferSize = 0;
-	ssize_t bytesRead;
-	int historyCount;
+	FILE *fp;
+	char *line = NULL;
+	size_t len = 0;
+	ssize_t nread;
+	int count = 0;
+	History *temp;
 
-	filePointer = fopen(UserInfo->historyFile, "r");
-	if (filePointer == NULL)
+	fp = fopen("history.txt", "r");
+	if (fp == NULL)
 	{
 		perror("fopen");
-		return (0);
+		return (-1);
 	}
-	while ((bytesRead = getline(&lineBuffer, &bufferSize, filePointer)) != -1)
+	while ((nread = getline(&line, &len, fp)) != -1)
 	{
-		HistoryNode *newNode = malloc(sizeof(HistoryNode));
-
-		if (newNode == NULL)
+		temp = malloc(sizeof(History));
+		if (temp == NULL)
 		{
 			perror("malloc");
-			break;
+			fclose(fp);
+			free(line);
+			return (-1);
 		}
-		newNode->command = strdup(lineBuffer);
-		newNode->number = ++historyCount;
+		temp->command = strdup(line);
+		if (temp->command == NULL)
+		{
+			perror("strdup");
+			fclose(fp);
+			free(line);
+			free(temp);
+			return (-1);
+		}
+		temp->next = userInfo->history;
+		userInfo->history = temp;
 
-		if (userInfo->history == NULL)
-		{
-			userInfo->history == newNode;
-			newNode->next = NULL;
-		}
-		else
-		{
-			HistoryNode *temp = userInfo->history;
-			while (temp->nest != NULL)
-			{
-				temp = temp->next;
-			}
-			temp->next = newNode;
-			newNode->next = NULL;
-		}
+		count++;
 	}
-	free(lineBuffer);
-	fclose(filePointer);
-	return (historyCount);
+	fclose(fp);
+	free(line);
+	return (count);
 }
 
 /**
