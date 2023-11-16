@@ -33,7 +33,7 @@ int _custom_putsfd(char *str, int fd)
  */
 int writeCharToFileDescriptor(char character, int fileDescriptor)
 {
-	static int buffeIndex;
+	static int bufferIndex;
 	static char buffer[WRITE_BUF_SIZE];
 
 	if (fileDescriptor < 0)
@@ -64,9 +64,9 @@ int writeCharToFileDescriptor(char character, int fileDescriptor)
 int custom_eputchar(char c)
 {
 	static int i;
-	static char buf[BUF_SIZE];
+	static char buf[BUFSIZ];
 
-	if (i >= BUF_SIZE || c == BUF_FLUSH)
+	if (i >= BUFSIZ || c == BUF_FLUSH)
 	{
 		if (write(2, buf, i) == -1)
 		{
@@ -80,7 +80,7 @@ int custom_eputchar(char c)
 		}
 	}
 
-	buf[i++] == c;
+	buf[i++] = c;
 	return (1);
 }
 
