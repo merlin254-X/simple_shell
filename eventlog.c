@@ -68,6 +68,37 @@ int writeHistoryToFile(UserInfo *userInfo)
     return (1);
 }
 
+int writeHistoryToFile(UserInfo *userInfo) {
+    int historyFile;
+    char *historyFilePath;
+    HistoryEntry *currentEntry;
+
+    historyFilePath = generateHistoryFilePath(userInfo);
+    if (historyFilePath == NULL)
+        return -1;
+
+    historyFile = open(historyFilePath, O_WRONLY | O_APPEND | O_CREAT, 0644);
+    if (historyFile == -1) {
+        free(historyFilePath);
+        return -1;
+    }
+
+    currentEntry = userInfo->history;
+    while (currentEntry != NULL) {
+        size_t len = strlen(currentEntry->command);
+        write(historyFile, currentEntry->command, len);
+        write(historyFile, "\n", 1);
+
+        currentEntry = currentEntry->next;
+    }
+
+    close(historyFile);
+    free(historyFilePath);
+
+    return 1;
+}
+
+
 /**
  * readHistoryFromFile - Reads history from a file and
  * updates the user information.

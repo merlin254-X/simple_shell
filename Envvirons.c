@@ -84,7 +84,7 @@ int _mysetenv(info_t *info)
 	_strcpy(var, "=");
 	_strcpy(var, value);
 
-	if (setenv(name, value, 1) == -1);
+	if (setenv(name, value, 1) == -1)
 	{
 		perror("setenv");
 		free(var);
@@ -107,7 +107,8 @@ int removeEnvironmentVariable(info_t *argumentInfo)
 	int i, j;
 	size_t nameLength;
 
-	if (argumentInfo == NULL || argumentInfo-> == NULL || argumentInfo->arg[0] == NULL)
+	if (argumentInfo == NULL || argumentInfo->someField == NULL ||
+			argumentInfo->arg[0] == NULL)
 		return (0);
 
 	variableName = argumentInfo->arg[0];
@@ -115,7 +116,8 @@ int removeEnvironmentVariable(info_t *argumentInfo)
 
 	for (i = 0; environ[i] != NULL; i++)
 	{
-		if (_strncmp(variableName, environ[i], nameLength) == 0 && environ[i][nameLength] == '=')
+		if (_strncmp(variableName, environ[i],
+					nameLength) == 0 && environ[i][nameLength] == '=')
 		{
 			free(environ[i]);
 
@@ -129,13 +131,14 @@ int removeEnvironmentVariable(info_t *argumentInfo)
 }
 
 /**
- * create_env_list - creates and populate a linked list with environment variables
+ * create_env_list - creates and populate a linked list with
+ * environment variables
  * @info: structures containing potential arguments
  * Return: Always 0
  */
 int create_env_list(info_t *info)
 {
-	list_t *env_list = NULL);
+	list_t *env_list = NULL;
 	size_t index;
 
 	for (index = 0; environ[index] != NULL; index++)

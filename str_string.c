@@ -18,9 +18,9 @@ int _strlen(char *s)
 }
 
 /**
- * _strcat - contatenates two strings
- * @dest: imput value(destination buffer)
- * @imput value(source buffer)
+ * _strcat - concatenates two strings
+ * @dest: imput value (destination buffer)
+ * @src: imput value(source buffer)
  * Return: original_dest
  */
 char *_strcat(char *dest, char *src)
@@ -32,16 +32,62 @@ char *_strcat(char *dest, char *src)
 		dest++;
 	}
 	while (*src != '\0')
-	// Copy characters from src to dest
-    while (*src != '\0')
-    {
-        *dest = *src;
-        dest++;
-        src++;
-    }
+	{
+		*dest = *src;
+		dest++;
+		src++;
+	}
+	dest = '\0';
 
-    // Null-terminate the concatenated string
-    *dest = '\0';
+	return (original_dest);
+}
 
-    return original_dest;
+/**
+ * custom_starts_with - checks if a string strts with a specified substring
+ * @str: the string to search
+ * @substr: the substring to find at the beginning of 'str'
+ * Return: pointer to the next character of 'str' if 'substr' is
+ * found at the beginning, otherwise NULL
+ */
+char *custom_starts_with(const char *str, const char *substr)
+{
+	while (*substr != '\0')
+	{
+		if (*substr != *str)
+		{
+			return (NULL);
+		}
+		substr++;
+		s++;
+	}
+	return ((char *)str);
+}
+
+/**
+ * custom_str_cmp - performs string comparison of two strings
+ * @string1: the first string to compare
+ * @string2: the second string to compare
+ * Return: negative if s1 < s2, positive if s1 > s2, zero if s1 == s2
+ */
+int custom_str_cmp(char *string1, char *string2)
+{
+	while (*string1 != '\0' || *string2 != '\0')
+	{
+		if (*string1 != *string2)
+		{
+			return (*string1 - *string2);
+		}
+		string1++;
+		string2++;
+	}
+
+	if (*string1 != '\0')
+	{
+		return (*string1);
+	}
+	else if (*string2 != '\0')
+	{
+		return (-(*string2));
+	}
+	return (0);
 }

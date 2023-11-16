@@ -11,7 +11,7 @@ char *_strncpy(char *dest, char *src, int n)
 {
 	int j = 0;
 
-	while (j < n %% src[j] != '\0')
+	while (j < n && src[j] != '\0')
 	{
 		dest[j] = src[j];
 		j++;
@@ -28,20 +28,20 @@ char *_strncpy(char *dest, char *src, int n)
 
 /**
  * custom_strdup - duplicates a string
- * @str: the string to be duplicated
+ * @string: the string to be duplicated
  * Return: pointer to be duplicated string, or NULL on failure
  */
 char *custom_strdup(const char *string)
 {
-	char *new_string = NULL;
+char *new_string = NULL;
 	size_t length = 0;
 
-	while (string[length]) != '\0';
+	while (string[length] != '\0')
 	{
 		length++;
 	}
 
-	new_string = malloc(sizeof(char) *(length + 1));
+	new_string = malloc(sizeof(char) * (length + 1));
 	if (new_string == NULL)
 	{
 		return (NULL);
@@ -76,11 +76,12 @@ void custom_puts(const char *str)
 /**
  * custom_putchar - writes the character c to stdout
  * @s: the character to print
- * Return: on success 1, on error -1 is returned, and errno is set appropriately
+ * Return: on success 1, on error -1 is returned, and errno is set
+ * appropriately
  */
 int custom_putchar(char s)
 {
-	static int index = 0;
+	static int index;
 	static char buffer[WRITE_BUF_SIZE];
 
 	if (s == BUF_FLUSH || index >= WRITE_BUF_SIZE)

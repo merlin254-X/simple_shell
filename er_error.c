@@ -24,14 +24,16 @@ int _custom_putsfd(char *str, int fd)
 }
 
 /**
- * writeCharToFileDescriptor - writes the character to the given file descriptor
+ * writeCharToFileDescriptor - writes the character to the given
+ * file descriptor
  * @character: the character to write
  * @fileDescriptor: the file descriptor to write to
- * Return: on success, 1. on error, -1 is returned, and errno is set appropriately
+ * Return: on success, 1, on error, -1 is returned, and errno is
+ * set appropriately
  */
 int writeCharToFileDescriptor(char character, int fileDescriptor)
 {
-	static int buffeIndex = 0;
+	static int buffeIndex;
 	static char buffer[WRITE_BUF_SIZE];
 
 	if (fileDescriptor < 0)
@@ -39,7 +41,7 @@ int writeCharToFileDescriptor(char character, int fileDescriptor)
 		return (-1);
 	}
 
-	if (character == '\0' || bufferIndex >= WRITE_BUF_SIZE -1)
+	if (character == '\0' || bufferIndex >= WRITE_BUF_SIZE - 1)
 	{
 		write(fileDescriptor, buffer, bufferIndex);
 		bufferIndex = 0;
@@ -61,7 +63,7 @@ int writeCharToFileDescriptor(char character, int fileDescriptor)
  */
 int custom_eputchar(char c)
 {
-	static int i = 0;
+	static int i;
 	static char buf[BUF_SIZE];
 
 	if (i >= BUF_SIZE || c == BUF_FLUSH)
@@ -79,7 +81,7 @@ int custom_eputchar(char c)
 	}
 
 	buf[i++] == c;
-	return (1)
+	return (1);
 }
 
 /**

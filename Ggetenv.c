@@ -34,7 +34,7 @@ char **duplicate_environ(info_t *info)
 /**
  * _unsetenv - removes an environment variable
  * @info: structure containing potential arguments
- * @variables: the string representing the environment variable
+ * @variable: the string representing the environment variable
  * Return: 1 on successiful removal, 0 otherwise
  */
 int _unsetenv(info_t *info, char *variable)
@@ -48,7 +48,8 @@ int _unsetenv(info_t *info, char *variable)
 	length = _strlen(variable);
 	for (i = 0; environment[i] != NULL; i++)
 	{
-		if (_strncmp(environment[i], variable, length) == 0 && environment[i][length] == '=')
+		if (_strncmp(environment[i], variable, length) == 0
+				&& environment[i][length] == '=')
 		{
 			free(environment[i]);
 			for (j = i; environment[j] != NULL; j++)
@@ -60,7 +61,7 @@ int _unsetenv(info_t *info, char *variable)
 }
 
 /**
- * set_environment_variable = set or modify an environment variable
+ * set_environment_variable - set or modify an environment variable
  * @info: structure containing potential arguments
  * @variable: the name of the environment
  * @value: the value to set for the environment variable
