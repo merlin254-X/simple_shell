@@ -18,7 +18,7 @@ int displayCommandHistory(ShellInfo *shellInfo)
  */
 int mimicAlias(ShellInfo *shellInfo)
 {
-    char *aliasName, *aliasValue;
+	char *aliasName, *aliasValue;
 
     if (shellInfo->argc == 0)
     {
