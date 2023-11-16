@@ -7,8 +7,8 @@
  */
 int displayCommandHistory(ShellInfo *shellInfo)
 {
-    printList(shellInfo->commandHistory);
-    return (0);
+	printList(shellInfo->commandHistory);
+	return (0);
 }
 
 /**
