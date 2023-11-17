@@ -8,6 +8,7 @@
 #include <limits.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <ctype.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/stat.h>
@@ -80,6 +81,11 @@ typedef struct info
 	int env_size;
 	list_t *env_list;
 	
+
+
+	char *name;
+	char *arg;
+	int error;
 
 } info_t;
 

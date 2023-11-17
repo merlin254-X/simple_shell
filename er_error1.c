@@ -8,10 +8,12 @@
  */
 void removeComments(char *inputString)
 {
+	int index = 0;
+
 	if (inputString == NULL)
 		return;
 
-	for (int index = 0; inputString[index] != '\0'; index++)
+	for (inputString[index] != '\0'; index++)
 	{
 		if (inputString[index] == '#' &&
 				(index == 0 || inputString[index - 1] == ' '))
@@ -119,6 +121,7 @@ int custom_print_d(int num, int output_fd)
  * @error_type: string describing the type of error
  * Return: void
  */
+
 void print_error(info_t *info, char *error_type)
 {
 	if (info == NULL)
@@ -145,7 +148,7 @@ void print_error(info_t *info, char *error_type)
  * @s: the string to be converted
  * Return: 0 if no numbers in string, convert number otherwise,-1 on error
  */
-int _custom_atoi(char s)
+int _custom_atoi(char *s)
 {
 	int result = 0;
 	int sign = 1;
@@ -168,13 +171,13 @@ int _custom_atoi(char s)
 			result = result * 10 + digit;
 			started = 1;
 		}
-		else if (*s == '+' || == '-')
+		else if (*s == '+' || *s == '-')
 		{
 			if (started)
 			{
 				break;
 			}
-			sign = (*s == '+') ? : -1;
+			sign = (*s = '+') ? 1 : -1;
 		}
 		else
 		{
