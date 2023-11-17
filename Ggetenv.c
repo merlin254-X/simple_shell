@@ -23,7 +23,7 @@ char **duplicate_environ(info_t *info)
 			free_env(env_copy);
 			return (NULL);
 		}
-		_strcpy(env_copy[i], info->environ[i]);
+		strcpy(env_copy[i], info->environ[i]);
 	}
 	env_copy[i] = NULL;
 
@@ -48,7 +48,7 @@ int _unsetenv(info_t *info, char *variable)
 	length = _strlen(variable);
 	for (i = 0; environment[i] != NULL; i++)
 	{
-		if (_strncmp(environment[i], variable, length) == 0
+		if (strncmp(environment[i], variable, length) == 0
 				&& environment[i][length] == '=')
 		{
 			free(environment[i]);
@@ -81,11 +81,11 @@ int set_environment_variable(info_t *info, char *variable, char *value)
 	if (new_var == NULL)
 		return (-1);
 
-	_strcpy(new_var, variable);
+	strcpy(new_var, variable);
 	_strcat(new_var, "=");
 	_strcat(new_var, value);
 
-	if (_putenv(new_var) == -1)
+	if (putenv(new_var) == -1)
 	{
 		free(new_var);
 		return (-1);

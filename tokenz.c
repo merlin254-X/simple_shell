@@ -8,17 +8,22 @@
  */
 char **strtow(char *str, char d)
 {
+	int i;
 	int len = strlen(str);
 	int wordCount = 0;
+	char **words;
+	int wordLength;
+	int wordIndex;
+	int wordStart;
 
-	for (int i = 0; i < len; i++)
+	for (i = 0; i < len; i++)
 	{
 		if (str[i] != d && (i == 0 || str[i - 1] == d))
 		{
 			wordCount++;
 		}
 	}
-	char **words = (char **)malloc(wordCount * sizeof(char *));
+	words = (char **)malloc(wordCount * sizeof(char *));
 
 	if (!words)
 	{
@@ -26,17 +31,17 @@ char **strtow(char *str, char d)
 		return (NULL);
 	}
 
-	int wordIndex = 0;
-	int wordStart = 0;
+	wordIndex = 0;
+	wordStart = 0;
 
-	for (int i = 0; i < len; i++)
+	for (i = 0; i < len; i++)
 	{
 		if (str[i] == d)
 		{
-			int wordLength = i - wordStart;
+			wordLength = i - wordStart;
 
 			words[wordIndex] = (char *)malloc((wordLength + 1) * sizeof(char));
-			if (!words[wordInd])
+			if (!words[wordIndex])
 			{
 				perror("Memory allocation failed");
 				return (NULL);
@@ -47,7 +52,7 @@ char **strtow(char *str, char d)
 			wordStart = i + 1;
 		}
 	}
-	int wordLength = len - wordStart;
+	wordLength = len - wordStart;
 
 	words[wordIndex] = (char *)malloc((wordLength + 1) * sizeof(char));
 	if (!words[wordIndex])
@@ -68,7 +73,7 @@ char **strtow(char *str, char d)
  *
  * Return: A pointer to an array of strings, or NULL on failure
  */
-char **custom_strtow2(char *str, char d)
+char **custom_strtow2(char *str, const char d)
 {
 	int word_count = 0;
 	char **words = NULL;

@@ -43,6 +43,8 @@ typedef struct listint_s
 typedef struct list_s
 {
 	char *str;
+	int *value;
+	char *name;
 	unsigned int len;
 	struct list_s *next;
 } list_t;
@@ -54,9 +56,31 @@ typedef struct list_s
 typedef struct info
 {
 	char *args;
-	char *env;
+	char **env;
+	char alias;
 	int err_num;
 	int someField;
+	int status;
+	int errorNumber;
+	char path;
+	char *command;
+	char arguments;
+	char **argv;
+	char *arg;
+	int lineCount;
+	int lineCountFlag;
+	char interactive;
+	char name;
+	char address;
+	int *history;
+	int contactNumber;
+	char argc;
+	char **environ;
+	char environment;
+	int env_size;
+	list_t *env_list;
+	
+
 } info_t;
 
 /**
@@ -65,7 +89,19 @@ typedef struct info
  */
 typedef struct shellinfo
 {
+	char *argc;
+	int *commandHistory;
+	char *inputBuffer;
+	char *inputBufferLength;
+	char *currentPosition;
+	char *inputBufferSize;
+	char *fileDescriptor;
+	char *argv;
 	char *args;
+	char *command;
+	char *history;
+	char *historyFileName;
+	char *path;
 } shellinfo;
 
 /**
@@ -223,7 +259,15 @@ int _myexit(info_t *info);
 int custom_cd(info_t *info);
 int _myhelp(info_t *info);
 
-/* Main.c */
+/* main.c */
 
+int main(int argc, char *argv[]);
 
+/** Eeventlog.c */
+
+char *generateHistoryFilePath(shellinfo *shellInfo);
+int write_history(info_t *info);
+int readHistoryFromFile(shellinfo *shellInfo);
+int addToHistoryList(info_t *info, char *buffer, int lineCount);
+int renumberHistoryList(info_t *info);
 #endif

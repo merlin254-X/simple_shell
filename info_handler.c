@@ -9,9 +9,9 @@ void reset_info(info_t *info)
 	if (info != NULL)
 	{
 		info->argc = 0;
-		info->argv = NULL;
-		info->path = NULL;
-		info->arg = NULL;
+		info->argv = '\0';
+		info->path = '\0';
+		info->args = NULL;
 	}
 }
 
@@ -23,28 +23,31 @@ void reset_info(info_t *info)
  */
 void initialize_info(info_t *info, char **av)
 {
+	int i;
+	int j;
+
 	if (info == NULL || av == NULL)
 	{
 		return;
 	}
-	info->name = av[0];
+	info->name = *av[0];
 	info->argc = 0;
-	info->argv = NULL;
-	while (av[info->argc] != NULL)
+	info->argv = '\0';
+	while (av[(unsigned char)info->argc] != NULL)
 	{
 		info->argc++;
 	}
-	info->argv = malloc(sizeof(char *) * (info->argc + 1));
+	info->argv = (char **)malloc(sizeof(char *) * (info->argc + 1));
 	if (info->argv == NULL)
 	{
 		return;
 	}
-	for (int i = 0; i < info->argc; i++)
+	for (i = 0; i < info->argc; i++)
 	{
 		info->argv[i] = strdup(av[i]);
 		if (info->argv[i] == NULL)
 		{
-			for (int j = 0; j < i; j++)
+			for (j = 0; j < i; j++)
 			{
 				free(info->argv[j]);
 			}
@@ -79,7 +82,7 @@ void release_info(info_t *info, int free_all)
 	if (info->contactNumber != NULL)
 	{
 		free(info->contactNumber);
-		info->contactNumber = NULL;
+		info->contactNumber = (int)NULL;
 	}
 
 	if (free_all)

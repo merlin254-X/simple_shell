@@ -5,9 +5,9 @@
  * @shellInfo: Pointer to the ShellInfo struct.
  * Return: Always 0
  */
-int displayCommandHistory(ShellInfo *shellInfo)
+int displayCommandHistory(shellinfo *shellInfo)
 {
-	printList(shellInfo->commandHistory);
+	print_listint(shellInfo->commandHistory);
 	return (0);
 }
 
@@ -16,17 +16,18 @@ int displayCommandHistory(ShellInfo *shellInfo)
  * @shellInfo: Pointer to the ShellInfo struct.
  * Return: Always 0.
  */
-int mimicAlias(ShellInfo *shellInfo)
+int mimicAlias(shellinfo *shellInfo)
 {
+	int i;
 	char *aliasName, *aliasValue;
 
     if (shellInfo->argc == 0)
     {
-        printAliases(shellInfo);
+	(void)printAliases(shellInfo *shellInfo);
         return (0);
     }
 
-    for (int i = 0; i < shellInfo->argc; i++)
+    for (i = 0; i < shellInfo->argc; i++)
     {
         aliasName = strtok(shellInfo->argv[i], "=");
         aliasValue = strtok(NULL, "=");
@@ -37,13 +38,13 @@ int mimicAlias(ShellInfo *shellInfo)
             return (-1);
         }
 
-        if (getAlias(shellInfo, aliasName) != NULL)
+        if (set_alias(shellInfo, aliasName) != NULL)
         {
-            updateAlias(shellInfo, aliasName, aliasValue);
+            upddate_aliases(shellInfo, aliasName, aliasValue);
         }
         else
         {
-            addAlias(shellInfo, aliasName, aliasValue);
+            set_alias(shellInfo, aliasName, aliasValue);
         }
     }
 
@@ -78,12 +79,13 @@ int display_alias(list_t *alias_node)
  */
 int set_alias(info_t *info, char *alias_str)
 {
+	alias_t *alias = malloc(sizeof(alias));
+
     if (info == NULL || alias_str == NULL)
     {
         return (1);
     }
 
-    alias_t *alias = malloc(sizeof(alias_t));
     if (alias == NULL)
     {
         return (1);
@@ -106,7 +108,7 @@ int set_alias(info_t *info, char *alias_str)
  * unset_alias - Removes an alias from the alias linked list.
  * @info: Pointer to the structure containing potential arguments.
  * @str: The string representing the alias to be removed.
- *
+  *
  * Return: Always 0 on success, 1 on error.
  */
 int unset_alias(info_t *info, char *str)
@@ -121,7 +123,7 @@ int unset_alias(info_t *info, char *str)
 
     while (temp != NULL)
     {
-        if (_strcmp(temp->name, str) == 0)
+        if (strcmp(temp->name, str) == 0)
 	{
             if (prev == NULL)
 	    {
@@ -133,7 +135,7 @@ int unset_alias(info_t *info, char *str)
             }
 
             free(temp->name);
-            free(temp->value);
+            free((*temp)->value);
             free(temp);
 
             return (0);

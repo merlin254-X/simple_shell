@@ -7,7 +7,7 @@
  * @bufferLength: Address of the variable to store the buffer length.
  * Return: Bytes read or -1 on EOF or error.
  */
-ssize_t bufferChainedCommands(ShellInfo *shellInfo, char **buffer, size_t *bufferLength)
+ssize_t bufferChainedCommands(shellinfo *shellInfo, char **buffer, size_t *bufferLength)
 {
 	ssize_t bytesRead;
 	char *line = NULL;
@@ -28,8 +28,8 @@ ssize_t bufferChainedCommands(ShellInfo *shellInfo, char **buffer, size_t *buffe
 	if (strchr(line, ';'))
 	{
 		shellInfo->inputBuffer = line;
-		shellInfo->inputBufferLength = bytesRead;
-		bytesRead = getFirstCommand(shellInfo, buffer, bufferLength);
+		shellInfo->inputBufferLength = (char *)bytesRead;
+		bytesRead = getNextCommand(shellInfo, buffer, bufferLength);
 	}
 	else
 	{
@@ -47,23 +47,26 @@ ssize_t bufferChainedCommands(ShellInfo *shellInfo, char **buffer, size_t *buffe
  * Return: The number of bytes read for the command
  * or 0 if no more commands are available.
  */
-ssize_t getNextCommand(ShellInfo *shellInfo, char **command, size_t *commandLen)
-{
+ssize_t getNextCommand(shellinfo *shellInfo, char **command, size_t *commandLen)
+{	
+	size_t start;
+	size_t end;
+
 	if (shellInfo->currentPosition >= shellInfo->inputBufferSize)
 	{
 		*command = NULL;
 		*commandLen = 0;
 		return (0);
 	}
-	size_t start = shellInfo->currentPosition;
+	start = (size_t)shellInfo->currentPosition;
 
 	while (shellInfo->currentPosition < shellInfo->inputBufferSize &&
-			shellInfo->inputBuffer[shellInfo->currentPosition] != ';')
+			shellInfo->inputBuffer[shellInfo->currentPosition] != ';' && shellInfo->inputBuffer[shellInfo->currentPosition] != '\0')
 	{
 		shellInfo->currentPosition++;
 	}
 
-	size_t end = shellInfo->currentPosition;
+	end = (size_t)shellInfo->currentPosition;
 
 	*commandLen = end - start;
 	*command = malloc((*commandLen + 1) * sizeof(char));
@@ -92,7 +95,7 @@ ssize_t getNextCommand(ShellInfo *shellInfo, char **command, size_t *commandLen)
  * @size: Pointer to the size variable indicating the size of the buffer.
  * Return: The number of bytes read, or -1 on error.
  */
-ssize_t readBuffer(ShellInfo *shellInfo, char *buffer, size_t *size)
+ssize_t readBuffer(shellinfo *shellInfo, char *buffer, size_t *size)
 {
 	ssize_t bytesRead;
 
@@ -100,7 +103,7 @@ ssize_t readBuffer(ShellInfo *shellInfo, char *buffer, size_t *size)
 	{
 		return (-1);
 	}
-	bytesRead = read(shellInfo->fileDescriptor, buffer, *size);
+	bytesRead = read(*(shellInfo->fileDescriptor), buffer, *size);
 	if (bytesRead < 0)
 	{
 		perror("read");
@@ -117,7 +120,7 @@ ssize_t readBuffer(ShellInfo *shellInfo, char *buffer, size_t *size)
  *
  * Return: The number of bytes read, or -1 on error or EOF.
  */
-int getLine(ShellInfo *shellInfo, char **buffer, size_t *size)
+int getLine(shellinfo *shellInfo, char **buffer, size_t *size)
 {
 	char *tempBuffer;
 	size_t bufferSize;
@@ -135,7 +138,7 @@ int getLine(ShellInfo *shellInfo, char **buffer, size_t *size)
 
 	if (tempBuffer == NULL || bufferSize < 2)
 	{
-		bufferSize = BUFSIZE;
+		bufferSize = BUFSIZ;
 		tempBuffer = realloc(tempBuffer, bufferSize);
 		if (tempBuffer == NULL)
 		{
@@ -155,15 +158,14 @@ int getLine(ShellInfo *shellInfo, char **buffer, size_t *size)
 
 		if (index >= bufferSize - 1)
 		{
-			bufferSize += BUFSIZE;
+			bufferSize += BUFSIZ;
 			tempBuffer = realloc(tempBuffer, bufferSize);
 			if (tempBuffer == NULL)
 			{
 				return (-1);
 			}
 		}
-		if
-			(currentChar == '\0');
+		if (currentChar == '\0')
 		{
 			break;
 		}
@@ -171,7 +173,7 @@ int getLine(ShellInfo *shellInfo, char **buffer, size_t *size)
 	tempBuffer[index] = '\0';
 	*buffer = tempBuffer;
 	*size = bufferSize;
-	return (bytesRead > 0 ? index : bytesRead);
+	return (bytesRead > 0 ? index : (size_t)bytesRead);
 }
 
 /**
@@ -182,6 +184,6 @@ int getLine(ShellInfo *shellInfo, char **buffer, size_t *size)
  */
 void customSigintHandler(__attribute__((unused)) int signalNumber)
 {
-	customPrint("\n");
-	customPrint("$ ");
+	custom_print_d((char *)"\n", '\n');
+	custom_print_d((char *)"$ ");
 }

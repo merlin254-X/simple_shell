@@ -1,5 +1,4 @@
-
-include "shell.h"
+#include "shell.h"
 
 /**
  * _isalphabet - function to check for alphabet character
@@ -78,16 +77,16 @@ int strToInt(char *str)
  * @data: struct containing relevant information
  * Return: 1 if in interactive mode, 0 if otherwise
  */
-int checkInteractiveMode(info_t *data)
+int checkInteractiveMode(info_t *info)
 {
 	if (isatty(STDIN_FILENO))
 	{
-		data->interactive = 1;
+		info->interactive = 1;
 		return (1);
 	}
 	else
 	{
-		data->interactive = 0;
+		info->interactive = 0;
 		return (0);
 	}
 }

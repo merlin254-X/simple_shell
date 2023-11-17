@@ -7,6 +7,7 @@
  */
 int _myenv(info_t *info)
 {
+	int i;
 	char **env = info->environ;
 
 	if (env == NULL)
@@ -15,7 +16,7 @@ int _myenv(info_t *info)
 		return (-1);
 	}
 
-	for (int i = 0; env[i] != NULL; i++)
+	for (i = 0; env[i] != NULL; i++)
 	{
 		write(1, env[i], _strlen(env[i]));
 		write(1, "\n", 1);
@@ -25,14 +26,14 @@ int _myenv(info_t *info)
 }
 
 /**
- * _getenv - gets the value of an environment variable
+ * getenv - gets the value of an environment variable
  * @info: structure containing potential arguments
  *
  * @variable_name: env var name
  *
  * Return: the value of environ variable
  */
-char *_getenv(info_t *info, const char *variable_name)
+char *getenv(info_t *info, const char *variable_name)
 {
 	char **env = info->env;
 	int i, j;
@@ -80,9 +81,9 @@ int _mysetenv(info_t *info)
 		return (0);
 	}
 
-	_strcpy(var, name);
-	_strcpy(var, "=");
-	_strcpy(var, value);
+	strcpy(var, name);
+	strcpy(var, "=");
+	strcpy(var, value);
 
 	if (setenv(name, value, 1) == -1)
 	{
@@ -106,14 +107,17 @@ int removeEnvironmentVariable(info_t *argumentInfo)
 	char *variableName;
 	int i, j;
 	size_t nameLength;
+	extern char **environ;
+	
 
-	if (argumentInfo == NULL || argumentInfo->someField == NULL ||
-			argumentInfo->arg[0] == NULL)
+	if (argumentInfo == NULL || argumentInfo->someField != NULL ||
+			argumentInfo->arg[0] != NULL)
 		return (0);
 
-	variableName = argumentInfo->args[0];
+	variableName = &argumentInfo->args[0];
 	nameLength = _strlen(variableName);
 
+	
 	for (i = 0; environ[i] != NULL; i++)
 	{
 		if (strncmp(variableName, environ[i],
@@ -138,17 +142,16 @@ int removeEnvironmentVariable(info_t *argumentInfo)
  */
 int create_env_list(info_t *info)
 {
-	list_t *env_list = NULL;
-	size_t index;
+	char **env = environ;
+	list_t *head = NULL;
+	int i = 0;
 
-	for (index = 0; environ[index] != NULL; index++)
-
+	while (env[1])
 	{
-		add_node_end(&env_list, environ[index], 0);
-
+		add_node_end(&head, env[1]);
+		i++;
 	}
-
-	info->env = env_list;
+	info->env_list = head;
 
 	return (0);
 }

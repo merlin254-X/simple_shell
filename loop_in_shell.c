@@ -14,14 +14,14 @@ int shellMainLoop(info_t *paramInfo, char **arguments)
 
 	while (readStatus != -1 && builtinStatus != -2)
 	{
-		clearInformation(paramInfo);
+		void clearInformation(paramInfo);
 		if (isInteractiveMode(paramInfo))
 			printPrompt("$ ");
 		flushOutputBuffer();
-		readStatus = getInput(paramInfo);
+		readStatus = getopt(paramInfo);
 		if (readStatus != -1)
 		{
-			setInformation(paramInfo, arguments);
+			clearInformation(paramInfo, arguments);
 			builtinStatus = findBuiltinCommand(paramInfo);
 			if (builtinStatus == -1)
 				findCommand(paramInfo);
@@ -77,7 +77,7 @@ void executeCommand(info_t *paramInfo)
 		{
 			paramInfo->status = WEXITSTATUS(paramInfo->status);
 			if (paramInfo->status == 126)
-				printError(paramInfo, "Permission denied\n");
+				print_error(paramInfo, "Permission denied\n");
 		}
 	}
 }

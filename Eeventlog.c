@@ -1,10 +1,10 @@
 #include "shell.h"
 /**
  * generateHistoryFilePath - generates the path to the history file
- * @userInfo: user information struct
+ * @shellInfo: user information struct
  * Return: allocated string containing the history file path
  */
-char *generateHistoryFilePath(UserInfo *userInfo)
+char *generateHistoryFilePath(shellinfo *shellInfo)
 {
 	char *homeDirectory, *historyFileName, *historyFilePath;
 
@@ -12,7 +12,7 @@ char *generateHistoryFilePath(UserInfo *userInfo)
 	if (homeDirectory == NULL)
 		return (NULL);
 
-	historyFileName = userInfo->historyFileName;
+	historyFileName = shellInfo->historyFileName;
 	if (historyFileName == NULL)
 		return (NULL);
 
@@ -27,53 +27,43 @@ char *generateHistoryFilePath(UserInfo *userInfo)
 	strcat(historyFilePath, historyFileName);
 
 	return (historyFilePath);
-}
 
 /**
- * writeHistoryToFile - writes the command history of a user to a file
- * @userInfo: pointer to the UserInfo struct containing
- * command history
- * Return: 1 on successiful wriing of the user's command history to a file,
- * if there is an error,it returns -1
+ * write_history - create,modify, append the files
+ * @info: pointer to struct info_t containing arguments
+ * Return: 1 when successiful, -1 on failure
+ *
+ *
  */
-int writeHistoryToFile(UserInfo *userInfo)
+int write_history(info_t *info)
 {
-	int *historyFile;
-	char *historyFilePath;
-	HistoryEntry *currentEntry;
+	ssize_t fp;
+	char *filename = generateHistoryFilePath(info);
+	list_t *node = NULL;
 
-	historyFilePath = generateHistoryFilePath(userInfo);
-	if (historyFilePath == NULL)
-		return (-1);
+	fp = open(filename, O_CREAT | O_TRUNC | O_RDWR, 0644);
 
-	historyFile = open(historyFilePath, O_WRONLY | A_APPEND | O_CREAT, 0644);
-	if (historyFile == -1)
+	if (fp == -1)
 	{
-		free(historyFilePath);
 		return (-1);
 	}
-	currentEntry = userInfo->history;
-	while (currentEntry != NULL)
+
+	for (node = info->history; node; node = node->next)
 	{
-		size_t len = strlen(currentEntry->command);
-
-		write(historyFile, currentEntry->command, len);
-		write(historyFile, "\n", 1);
-
-		currentEntry = curentEntry->next;
+		_fputs(fp, node->str, strlen(node->str));
+		_fputs(fp, "\n", 1);
 	}
-	close(historyFile);
-	free(historyFilePath);
-
+	close(fp);
 	return (1);
+
 }
 /**
  * readHistoryFromFile - reads history from a file and updates
  *  the user information
- * @userInfo: pointer to the user information struct
+ * @shellInfo: pointer to the user information struct
  * Return: the count of history entries read from the file
  */
-int readHistoryFromFile(UserInfo *userInfo)
+int readHistoryFromFile(shellinfo *shellInfo)
 {
 	FILE *fp;
 	char *line = NULL;
@@ -107,8 +97,8 @@ int readHistoryFromFile(UserInfo *userInfo)
 			free(temp);
 			return (-1);
 		}
-		temp->next = userInfo->history;
-		userInfo->history = temp;
+		temp->next = shellInfo->history;
+		shellInfo->history = temp;
 
 		count++;
 	}

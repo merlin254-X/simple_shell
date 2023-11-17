@@ -10,14 +10,17 @@
  */
 char *duplicateSubstring(const char *sourceStr, int startIndex, int endIndex)
 {
+	char *result;
+	int length;
+
 	if (sourceStr == NULL || startIndex < 0 || endIndex < 0 ||
 			endIndex < startIndex)
 	{
 		return (NULL);
 	}
 
-	int length = endIndex - startIndex + 1;
-	char *result = (char *)malloc((length + 1) * sizeof(char));
+	length = endIndex - startIndex + 1;
+	result = (char *)malloc((length + 1) * sizeof(char));
 
 	if (result == NULL)
 	{
@@ -39,16 +42,17 @@ char *duplicateSubstring(const char *sourceStr, int startIndex, int endIndex)
  */
 char *locatePath(const char *pathString, const char *command)
 {
+	char *pathStrCopy;
 	char *token, *path, *delimiter = ":";
 	struct stat st;
 
 	if (command[0] == '/')
-		return (duplicateSrtring(command));
+		return (strdup(command));
 
 	if (pathString == NULL || pathString[0] == '\0')
 		return (NULL);
 
-	char *pathStrCopy = duplicateString(pathString);
+	pathStrCopy = strdup(pathString);
 
 	token = strtok(pathStrCopy, delimiter);
 	while (token != NULL)
@@ -76,20 +80,20 @@ char *locatePath(const char *pathString, const char *command)
  * @filePath: path to the file
  * Return: 1 if the file is an executable command, 0 otherwise
  */
-int isExecutableCommand(ShellInfo *shellInfo, char *filePath)
+int isExecutableCommand(shellinfo *shellInfo, char *filePath)
 {
 	struct stat fileInfo;
 
 	if (access(filePath, F_OK | R_OK) == 0)
 	{
-		if (start(filePath, &fileInfo) == 0 &&
-				(S_ISREG(fileInfo.st_mode) || S_ISLINK(fileInfo.st_mode)))
+		if (stat(filePath, &fileInfo) == 0 &&
+				(S_ISREG(fileInfo.st_mode) || S_ISLNK(fileInfo.st_mode)))
 		{
 			if (fileInfo.st_mode & S_IXUSR ||
 					fileInfo.st_mode & S_IXGRP || fileInfo.st_mode & S_IXOTH)
 			{
-				shellInfo->command = _strdup(filePath);
-				shellInfo->path = _strdup(filePath);
+				shellInfo->command = strdup(filePath);
+				shellInfo->path = strdup(filePath);
 				return (1);
 			}
 		}

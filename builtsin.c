@@ -1,6 +1,6 @@
 #include "shell.h"
 
-#define char *args[MAX_ARGS];
+
 
 /**
  * _myhelp - Displays a message indicating that the help function
@@ -58,7 +58,7 @@ int _myexit(info_t *info)
 	{
 		return (0);
 	}
-	if (info->args[1] != NULL)
+	if (info->args[1] != '\0')
 	{
 		char num_str;		
 		long int num;
@@ -66,7 +66,7 @@ int _myexit(info_t *info)
 		num_str = '1';
 		num = strtol(&num_str, NULL, 10);
 
-		if (*num_str != '\0')
+		if (num_str != '\0')
 		{
 			info->err_num = 2;
 			return (-2);
