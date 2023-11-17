@@ -1,5 +1,7 @@
 #include "shell.h"
 
+#define char *args[MAX_ARGS];
+
 /**
  * _myhelp - Displays a message indicating that the help function
  * is not yet implemented.
@@ -9,7 +11,7 @@
 int _myhelp(info_t *info)
 {
 	(void)info;
-	_puts("help call works. Function not yet implemented\n");
+	puts("help call works. Function not yet implemented\n");
 	return (0);
 }
 
@@ -23,13 +25,13 @@ int custom_cd(info_t *info)
 	char *target_path;
 	int change_status;
 
-	if (info->argc == 1)
+	if (info->args != NULL)
 	{
 		target_path = getenv("HOME");
 	}
 	else
 	{
-		target_path = info->argv[1];
+		target_path = &info->args[1];
 	}
 	change_status = chdir(target_path);
 	if (change_status == -1)
@@ -52,20 +54,25 @@ int _myexit(info_t *info)
 	int status = 0;
 	int exitcheck;
 
-	if (_strcmp(info->argv[0], "exit") != 0)
+	if (strcmp(info->args[0], "exit") != 0)
 	{
 		return (0);
 	}
-	if (info->argv[1] != NULL)
+	if (info->args[1] != NULL)
 	{
-		exitcheck = _erratoi(info->argv[1]);
-		if (exitcheck == -1)
+		char num_str;		
+		long int num;
+
+		num_str = '1';
+		num = strtol(&num_str, NULL, 10);
+
+		if (*num_str != '\0')
 		{
 			info->err_num = 2;
 			return (-2);
 		}
 		status = exitcheck;
 	}
-	free_info(info);
+	reset_info(info);
 	exit(status);
 }

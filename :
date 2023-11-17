@@ -55,7 +55,6 @@ typedef struct info
 {
 	char *args;
 	char *env;
-	int err_num;
 	int someField;
 } info_t;
 

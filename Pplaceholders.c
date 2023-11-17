@@ -5,29 +5,30 @@
  * @info: information struct holding parameters and aliases
  * Return: 1 if replaced, 0 otherwise
  */
-int update_aliases(parameter_info_t *info)
+int update_aliases(info_t *info)
 {
+	int i;
 	int replaced = 0;
-	list_node_t *current_node;
+	listint_t *current_node;
 	char *alias_value;
 
-	for (int i = 0; i < 10; i++)
+	for (i = 0; i < 10; i++)
 	{
-		current_node = find_node_starting_with(info->aliases,
-				info->arguments[0], '=');
+		current_node = (listint_t *)node_start_with(info->env)
+				info->args[0], '=';
 		if (!current_node)
 		{
 			continue;
 		}
 
-		alias_value = strchr(current_node->str, '=') = 1;
+		alias_value = strchr(current_node->value, '=') = 1;
 		if (!alias_value)
 		{
 			continue;
 		}
 
-		free(info->arguments[0]);
-		info->arguments[0] = strdup(alias_value);
+		free((void *)info->args[0]);
+		info->args[0] = *strdup(alias_value);
 
 		replaced = 1;
 	}
@@ -66,14 +67,15 @@ int update_string(char **str, const char *new_str)
  */
 int process_variables(struct info *info)
 {
+	int i;
 	int replaced = 0;
 
-	for (int i = 0; info->args[i] != NULL; i++)
+	for (i = 0; info->args[i] != (void *)NULL; i++)
 	{
-		if (info->args[i][0] == '$')
+		if ((*info->args[i])[0] == '$')
 		{
 			char *var = info->args[i] + 1;
-			char *value = _getenv(var, info);
+			char *value = _getenv((char *)*var, info); 
 
 			if (value != NULL)
 			{
@@ -88,8 +90,8 @@ int process_variables(struct info *info)
 				}
 
 				strcpy(new, value);
-				free(info->args[i]);
-				info->args[i] = new;
+				free((void *)info->args[i]);
+				info->args[i] = *new;
 				replaced = 1;
 			}
 		}
@@ -101,14 +103,15 @@ int process_variables(struct info *info)
 /**
  * check_delimiter - checks if the current character
  * in the buffer is a command delimiter
- * @info: parameter structure
  * @buf: character buffer
  * @pos: address of the current position in buf
  * Return: 1 if delimeter found, 0 otherwise
  */
-int check_delimiter(info_t *info, char *buf, int *pos)
+int check_delimiter(char *buf, int *pos)
 {
-	char c == buf{*pos};
+	char c;
+
+	c = buf[*pos];
 
 	if (c == '\0' || c == '\n')
 		return (1);
