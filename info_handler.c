@@ -30,7 +30,8 @@ void initialize_info(info_t *info, char **av)
 	{
 		return;
 	}
-	info->name = *av[0];
+	info->name = &av[0][0];
+
 	info->argc = 0;
 	info->argv = '\0';
 	while (av[(unsigned char)info->argc] != NULL)
@@ -56,7 +57,7 @@ void initialize_info(info_t *info, char **av)
 			return;
 		}
 	}
-	info->argv[info->argc] = NULL;
+	info->argv[(int)info->argc] = NULL;
 }
 
 /**
@@ -82,12 +83,12 @@ void release_info(info_t *info, int free_all)
 	if (info->contactNumber != NULL)
 	{
 		free(info->contactNumber);
-		info->contactNumber = (int)NULL;
+		info->contactNumber = NULL;
 	}
 
 	if (free_all)
 	{
 		free(info);
-		info = NULL;
+		return;
 	}
 }

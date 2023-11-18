@@ -23,13 +23,13 @@ int mimicAlias(shellinfo *shellInfo)
 
     if (shellInfo->argc == 0)
     {
-	(void)printAliases(shellInfo *shellInfo);
+	print_aliases(shellinfo (*shellInfo);
         return (0);
     }
 
-    for (i = 0; i < shellInfo->argc; i++)
+    for (i = 0; i < (*shellInfo->argc); i++)
     {
-        aliasName = strtok(shellInfo->argv[i], "=");
+        aliasName = strtok((char *)shellInfo->argv[i], "=");
         aliasValue = strtok(NULL, "=");
 
         if (aliasName == NULL || aliasValue == NULL)

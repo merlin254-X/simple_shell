@@ -15,13 +15,14 @@ Node *add_node_at_start(Node **head_ref, const char *data, int index)
 		{
 			return (NULL);
 		}
-		strcpy(new_node->data, data);
+		new_node->data = data;
 		new_node->index = index;
 
 		new_node->next = *head_ref;
 		*head_ref = new_node;
 
 		return (new_node);
+
 	}
 /**
  * append_node - appends a node to the end of the linked list
@@ -31,7 +32,7 @@ Node *add_node_at_start(Node **head_ref, const char *data, int index)
  *
  * Return: pointer to the newly appended node, or NULL on failure
  */
-Node *append_node(Node **head, const char *str, int num)
+Node * append_list_node_at_end(Node **head, const char *str, int num)
 	{
 		if (head == NULL || str == NULL)
 		{
@@ -46,6 +47,12 @@ Node *append_node(Node **head, const char *str, int num)
 		}
 
 		new_node->data = strdup(str);
+
+		if (new_node->data == NULL)
+		{
+			free(new_node);
+			return (NULL);
+		}
 		new_node->index = num;
 		new_node->next = NULL;
 
@@ -64,8 +71,6 @@ Node *append_node(Node **head, const char *str, int num)
 		current_node->next = new_node;
 
 		return (new_node);
-
-
 	}
 
 /**
@@ -78,6 +83,7 @@ Node *append_node(Node **head, const char *str, int num)
 size_t write_strings_in_list(const Node *head)
 {
 	size_t count = 0;
+	
 
 	while (head != NULL)
 	{

@@ -52,7 +52,7 @@ ssize_t getNextCommand(shellinfo *shellInfo, char **command, size_t *commandLen)
 	size_t start;
 	size_t end;
 
-	if (shellInfo->currentPosition >= shellInfo->inputBufferSize)
+	if ((size_t)shellInfo->currentPosition >= (unsigned char)*(shellInfo->inputBufferSize))
 	{
 		*command = NULL;
 		*commandLen = 0;
@@ -60,8 +60,8 @@ ssize_t getNextCommand(shellinfo *shellInfo, char **command, size_t *commandLen)
 	}
 	start = (size_t)shellInfo->currentPosition;
 
-	while (shellInfo->currentPosition < shellInfo->inputBufferSize &&
-			shellInfo->inputBuffer[shellInfo->currentPosition] != ';' && shellInfo->inputBuffer[shellInfo->currentPosition] != '\0')
+	while ((size_t)shellInfo->currentPosition < *(shellInfo->inputBufferSize) &&
+			(unsigned char)shellInfo->inputBuffer[*(shellInfo->currentPosition)](unsigned char) != ';' && (unsigned char)shellInfo->inputBuffer[*(shellInfo->currentPosition)](unsigned int) != '\0')
 	{
 		shellInfo->currentPosition++;
 	}
@@ -78,11 +78,16 @@ ssize_t getNextCommand(shellinfo *shellInfo, char **command, size_t *commandLen)
 	memcpy(*command, shellInfo->inputBuffer + start, *commandLen);
 	(*command)[*commandLen] = '\0';
 
-	if (shellInfo->currentPosition < shellInfo->inputBufferSize &&
-			shellInfo->inputBuffer[shellInfo->currentPosition] == ';')
+	if ((size_t)*(shellInfo->currentPosition) < *(shellInfo->inputBufferSize) && (unsigned char)'\0' !=
+			shellInfo->inputBuffer[*((size_t *)shellInfo->currentPosition)])
 	{
 		shellInfo->currentPosition++;
 	}
+	else
+	{
+		shellInfo->inputBuffer[shellInfo->currentPosition] == '\0';
+	}
+	
 
 	return (*commandLen);
 }
@@ -184,6 +189,6 @@ int getLine(shellinfo *shellInfo, char **buffer, size_t *size)
  */
 void customSigintHandler(__attribute__((unused)) int signalNumber)
 {
-	custom_print_d((char *)"\n", '\n');
-	custom_print_d((char *)"$ ");
+	puts("\n$ ");
+	
 }

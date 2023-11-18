@@ -27,6 +27,7 @@ char *generateHistoryFilePath(shellinfo *shellInfo)
 	strcat(historyFilePath, historyFileName);
 
 	return (historyFilePath);
+}
 
 /**
  * write_history - create,modify, append the files
@@ -35,25 +36,25 @@ char *generateHistoryFilePath(shellinfo *shellInfo)
  *
  *
  */
-int write_history(info_t *info)
+int write_history(shellinfo *shellInfo)
 {
-	ssize_t fp;
-	char *filename = generateHistoryFilePath(info);
-	list_t *node = NULL;
+	int fd;
+	char *filename = generateHistoryFilePath(shellInfo);
+	list_t *current_node = NULL;
 
-	fp = open(filename, O_CREAT | O_TRUNC | O_RDWR, 0644);
+	fd = open(filename, O_CREAT | O_TRUNC | O_RDWR, 0644);
 
-	if (fp == -1)
+	if (fd == -1)
 	{
 		return (-1);
 	}
 
-	for (node = info->history; node; node = node->next)
+	for (current_node = shellInfo->history; current_node; current_node = current_node->next)
 	{
-		_fputs(fp, node->str, strlen(node->str));
-		_fputs(fp, "\n", 1);
+		write(fd, current_node->str, strlen(current_node->str));
+		write(fd, "\n", 1);
 	}
-	close(fp);
+	close(fd);
 	return (1);
 
 }

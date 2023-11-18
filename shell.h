@@ -67,11 +67,11 @@ typedef struct info
 	char *command;
 	char arguments;
 	char **argv;
-	char *arg;
+	
 	int lineCount;
 	int lineCountFlag;
 	char interactive;
-	char name;
+	
 	char address;
 	int *history;
 	int contactNumber;
@@ -80,12 +80,10 @@ typedef struct info
 	char environment;
 	int env_size;
 	list_t *env_list;
-	
-
-
 	char *name;
 	char *arg;
 	int error;
+	
 
 } info_t;
 
@@ -99,7 +97,7 @@ typedef struct shellinfo
 	int *commandHistory;
 	char *inputBuffer;
 	char *inputBufferLength;
-	char *currentPosition;
+	int *currentPosition;
 	char *inputBufferSize;
 	char *fileDescriptor;
 	char *argv;
@@ -124,6 +122,7 @@ typedef struct Node
 {
 	int data;
 	struct Node* next;
+	int *index;
 } Node;
 
 
@@ -140,7 +139,7 @@ typedef struct Node
 
 /* list_list.c */
 Node *add_node_at_start(Node **head_ref, const char *data, int index);
-Node *append_node(Node **head, const char *str, int num);
+void add_node_at_end(Node **head, const char *str, int num);
 size_t print_strings_in_list(const Node *head);
 int delete_node_at_the_given_index(Node **head_ref, unsigned int index);
 void free_listint(listint_t *head);
@@ -272,7 +271,7 @@ int main(int argc, char *argv[]);
 /** Eeventlog.c */
 
 char *generateHistoryFilePath(shellinfo *shellInfo);
-int write_history(info_t *info);
+int write_history(shellinfo *shellInfo);
 int readHistoryFromFile(shellinfo *shellInfo);
 int addToHistoryList(info_t *info, char *buffer, int lineCount);
 int renumberHistoryList(info_t *info);
