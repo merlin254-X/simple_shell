@@ -23,7 +23,7 @@ int mimicAlias(shellinfo *shellInfo)
 
     if (shellInfo->argc == 0)
     {
-	print_aliases(shellinfo (*shellInfo);
+	print_aliases(&shellInfo);
         return (0);
     }
 
@@ -65,7 +65,7 @@ int display_alias(list_t *alias_node)
     }
     write(STDOUT_FILENO, alias_node->name, _strlen(alias_node->name));
     write(STDOUT_FILENO, "='", 2);
-    write(STDOUT_FILENO, alias_node->value, _strlen(alias_node->value));
+    write(STDOUT_FILENO, alias_node->value, _strlen((char *)(alias_node->value)));
     write(STDOUT_FILENO, "'\n", 2);
     return (0);
 }
@@ -98,8 +98,8 @@ int set_alias(info_t *info, char *alias_str)
         return (1);
     }
 
-    alias->next = info->alias;
-    info->alias = alias;
+    alias->next = (struct alias *)info->alias;
+    info->alias = (char *)alias;
 
     return (0);
 }
@@ -113,36 +113,34 @@ int set_alias(info_t *info, char *alias_str)
  */
 int unset_alias(info_t *info, char *str)
 {
+	char **current = &info->alias;
+	char **prev = NULL;
+
     if (info == NULL || str == NULL)
     {
         return (1);
     }
 
-    alias_t *temp = info->alias;
-    alias_t *prev = NULL;
-
-    while (temp != NULL)
+    while (*current != NULL)
     {
-        if (strcmp(temp->name, str) == 0)
+        if (strcmp(*current, str) == 0)
 	{
             if (prev == NULL)
 	    {
-                info->alias = temp->next;
+                info->alias = (char *)( *(current + 1));
             }
 	    else
 	    {
-                prev->next = temp->next;
+               *prev = *(current + 1);
             }
 
-            free(temp->name);
-            free((*temp)->value);
-            free(temp);
-
+            free(*current);
+              
             return (0);
         }
 
-        prev = temp;
-        temp = temp->next;
+        prev = current;
+        current = (char **)(*(current));
     }
 
     return (1);

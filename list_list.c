@@ -15,7 +15,7 @@ Node *add_node_at_start(Node **head_ref, const char *data, int index)
 		{
 			return (NULL);
 		}
-		new_node->data = data;
+		new_node->data = (char *)data;
 		new_node->index = index;
 
 		new_node->next = *head_ref;
@@ -34,11 +34,14 @@ Node *add_node_at_start(Node **head_ref, const char *data, int index)
  */
 Node * append_list_node_at_end(Node **head, const char *str, int num)
 	{
+		Node *new_node;
+		Node *current_node;
+
 		if (head == NULL || str == NULL)
 		{
 			return (NULL);
 		}
-		Node *new_node == (Node *)malloc(sizeof(Node));
+		new_node = (Node *)malloc(sizeof(Node));
 
 		if (new_node == NULL)
 
@@ -62,7 +65,7 @@ Node * append_list_node_at_end(Node **head, const char *str, int num)
 			return (new_node);
 		}
 
-		Node *current_node = *head;
+		current_node = *head;
 
 		while (current_node->next != NULL)
 		{

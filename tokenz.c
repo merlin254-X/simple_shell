@@ -69,11 +69,11 @@ char **strtow(char *str, char d)
 /**
  * custom_strtow2 - Splits a string into words based on a delimiter
  * @str: The input string
- * @d: The delimiter character
+ *
  *
  * Return: A pointer to an array of strings, or NULL on failure
  */
-char **custom_strtow2(char *str, const char d)
+char **custom_strtow2(char *str)
 {
 	int word_count = 0;
 	char **words = NULL;
@@ -85,7 +85,7 @@ char **custom_strtow2(char *str, const char d)
 		return (NULL);
 	}
 
-	token = strtok(str, d);
+	token = strtok(str, "d");
 	while (token != NULL)
 	{
 		words[word_count] = (char *)malloc(strlen(token) + 1);
@@ -103,7 +103,7 @@ char **custom_strtow2(char *str, const char d)
 			return (NULL);
 		}
 
-		token = strtok(NULL, d);
+		token = strtok(NULL, "d");
 	}
 
 	words[word_count] = NULL;

@@ -7,6 +7,8 @@
 size_t print_listint(const listint_t *k)
 {
 	size_t count = 0;
+	char digit;
+	
 
 	while (k != NULL)
 	{
@@ -14,12 +16,12 @@ size_t print_listint(const listint_t *k)
 
 		if (num < 0)
 		{
-			_write_char('-');
+		putchar('-');
 			num = -num;
 		}
 		if (num / 10)
-			print_listint(num / 10);
-		char digit = num % 10 + '0';
+			print_listint(k->next);
+		digit = num % 10 + '0';
 
 		write(1, &digit, 1);
 		write(1, "\n", 1);
@@ -84,14 +86,19 @@ Node *find_node_with_prefix(Node *head_node, const char *search_prefix,
  */
 char **convert_list_to_strings(Node *head_node)
 {
+	int count;
+	int i;
+	char **result;
+	Node *current;
+
 	if (head_node == NULL)
 	{
 		return (NULL);
 	}
 
-	int count = 0;
-
-	Node *current = head_node;
+	count = 0;
+	
+	current = head_node;
 
 	while (current != NULL)
 	{
@@ -99,21 +106,21 @@ char **convert_list_to_strings(Node *head_node)
 		current = current->next;
 	}
 
-	char **result = (char **)malloc(count * sizeof(char *));
+	result = (char **)malloc(count * sizeof(char *));
 
 	if (result == NULL)
 	{
 		return (NULL);
 	}
 	current = head_node;
-	for (int i = 0; i < count; i++)
+	for (i = 0; i < count; i++)
 	{
 		result[i] = (char *)malloc(strlen(current->data) + 1);
-		if (results[i] == NULL)
+		if (result[i] == NULL)
 		{
 			while (i > 0)
 			{
-				free(results[i - 1]);
+free(result[i - 1]);
 				i--;
 			}
 			free(result);

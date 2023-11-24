@@ -5,7 +5,7 @@
  * @info: information struct holding parameters and aliases
  * Return: 1 if replaced, 0 otherwise
  */
-int update_aliases(info_t *info)
+int update_aliases(infot_t *info)
 {
 	int i;
 	int replaced = 0;
@@ -14,7 +14,7 @@ int update_aliases(info_t *info)
 
 	for (i = 0; i < 10; i++)
 	{
-		current_node = (listint_t *)node_start_with(info->env)
+		current_node = (listint_t *)node_start_with(info->env);
 				info->args[0], '=';
 		if (!current_node)
 		{
@@ -90,7 +90,7 @@ int process_variables(struct info *info)
 				}
 
 				strcpy(new, value);
-				free((void *)info->args[i]);
+				free(info->args[i]);
 				info->args[i] = *new;
 				replaced = 1;
 			}
@@ -140,7 +140,7 @@ int check_delimiter(char *buf, int *pos)
 /**
  * evaluateChainCondition - evaluates whether to continue chaining
  * based on the previous status in the data structure
- * @data: pointer to the information structure containing
+ * @info: pointer to the information structure containing
  * command buffer type and status
  * @buffer: character buffer storing comand inputs
  * @position: address of the current position within the buffer
@@ -148,18 +148,18 @@ int check_delimiter(char *buf, int *pos)
  * @length: length of the buffer
  * Return: void
  */
-void evaluateChainCondition(info_struct *data, char *buffer,
+void evaluateChainCondition(infot_t *info, char *buffer,
 		size_t *position, size_t startIndex, size_t length)
 {
 	size_t newPosition = *position;
 
-	if (data->command_buffer_type == CMD_AND && data->status)
+	if (info->command_buffer_type == CMD_AND && info->status)
 	{
 		buffer[startIndex] = 0;
 		newPosition = length;
 	}
 
-	if (data->command_buffer_type == CMD_OR && !data->status)
+	if (info->command_buffer_type == CMD_OR && !(info->status))
 	{
 		buffer[startIndex] = 0;
 		newPosition = length;

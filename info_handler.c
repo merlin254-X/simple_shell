@@ -81,6 +81,7 @@ void release_info(info_t *info, int free_all)
 		info->address = NULL;
 	}
 	if (info->contactNumber != NULL)
+
 	{
 		free(info->contactNumber);
 		info->contactNumber = NULL;

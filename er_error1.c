@@ -13,7 +13,7 @@ void removeComments(char *inputString)
 	if (inputString == NULL)
 		return;
 
-	for (inputString[index] != '\0'; index++)
+	for (; inputString[index] != '\0'; index++)
 	{
 		if (inputString[index] == '#' &&
 				(index == 0 || inputString[index - 1] == ' '))

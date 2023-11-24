@@ -48,48 +48,42 @@ ssize_t bufferChainedCommands(shellinfo *shellInfo, char **buffer, size_t *buffe
  * or 0 if no more commands are available.
  */
 ssize_t getNextCommand(shellinfo *shellInfo, char **command, size_t *commandLen)
-{	
+{
+	ssize_t bytesRead;
 	size_t start;
 	size_t end;
+	size_t len;
 
-	if ((size_t)shellInfo->currentPosition >= (unsigned char)*(shellInfo->inputBufferSize))
+	if (shellInfo->inputBuffer == NULL || shellInfo->inputBuffer[0] == '\0')
 	{
-		*command = NULL;
-		*commandLen = 0;
 		return (0);
 	}
-	start = (size_t)shellInfo->currentPosition;
+	start = (size_t)shellInfo->inputBuffer;
+	end = start;
 
-	while ((size_t)shellInfo->currentPosition < *(shellInfo->inputBufferSize) &&
-			(unsigned char)shellInfo->inputBuffer[*(shellInfo->currentPosition)](unsigned char) != ';' && (unsigned char)shellInfo->inputBuffer[*(shellInfo->currentPosition)](unsigned int) != '\0')
+	while (shellInfo->inputBuffer[end] != '\0' && shellInfo->inputBuffer[end] != '\n')
 	{
-		shellInfo->currentPosition++;
+		end++;
 	}
+	len = end - start;
 
-	end = (size_t)shellInfo->currentPosition;
+	*command = malloc(len + 1);
 
-	*commandLen = end - start;
-	*command = malloc((*commandLen + 1) * sizeof(char));
 	if (*command == NULL)
 	{
 		perror("malloc");
 		exit(EXIT_FAILURE);
 	}
-	memcpy(*command, shellInfo->inputBuffer + start, *commandLen);
-	(*command)[*commandLen] = '\0';
+	memcpy(*command, shellInfo->inputBuffer + start, len);
+	(*command)[len] = '\0';
 
-	if ((size_t)*(shellInfo->currentPosition) < *(shellInfo->inputBufferSize) && (unsigned char)'\0' !=
-			shellInfo->inputBuffer[*((size_t *)shellInfo->currentPosition)])
-	{
-		shellInfo->currentPosition++;
-	}
-	else
-	{
-		shellInfo->inputBuffer[shellInfo->currentPosition] == '\0';
-	}
-	
+	shellInfo->inputIndex = (char *)end + 1;
 
-	return (*commandLen);
+	*commandLen = len;
+
+	bytesRead = len + 1;
+	return (bytesRead);
+
 }
 
 /**

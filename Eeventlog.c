@@ -127,7 +127,7 @@ int addToHistoryList(info_t *info, char *buffer, int lineCount)
 		return (-1);
 	}
 
-	newNode->line - _strdup(buffer);
+	newNode->line - strdup(buffer);
 	newNode->lineCount = lineCount;
 	newNode->next = NULL;
 

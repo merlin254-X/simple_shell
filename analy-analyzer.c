@@ -45,6 +45,7 @@ char *locatePath(const char *pathString, const char *command)
 	char *pathStrCopy;
 	char *token, *path, *delimiter = ":";
 	struct stat st;
+	char *concatenateStrings(const char *s1, const char *s2);
 
 	if (command[0] == '/')
 		return (strdup(command));

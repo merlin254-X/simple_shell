@@ -50,6 +50,13 @@ typedef struct list_s
 	struct list_s *next;
 } list_t;
 
+typedef struct alias {
+    char *name;
+    char *value;
+    char *str;
+    struct alias *next;
+} alias_t;
+
 /**
  * struct info - structure representing information relating to shell command
  * @args: arry of strings representing information relating to shell
@@ -58,7 +65,7 @@ typedef struct info
 {
 	char *args;
 	char **env;
-	char alias;
+        char *alias;
 	int err_num;
 	int someField;
 	int status;
@@ -72,20 +79,22 @@ typedef struct info
 	int lineCountFlag;
 	char interactive;
 	
-	char address;
+	char *address;
 	int *history;
 	int contactNumber;
 	char argc;
 	char **environ;
-	char environment;
+	char ** environment;
 	int env_size;
 	list_t *env_list;
 	char *name;
 	char *arg;
 	int error;
+	int command_buffer_type;
+	
 	
 
-} info_t;
+} infot_t;
 
 /**
  * struct shellinfo - structure containing information specific to a shell
@@ -106,24 +115,27 @@ typedef struct shellinfo
 	char *history;
 	char *historyFileName;
 	char *path;
+	char *inputIndex;
 } shellinfo;
 
-/**
- * struct data - structure containing generic data
- * @args: array of strings representing data
- */
-typedef struct data
-{
-	char *args;
-} data;
+
 
 
 typedef struct Node
 {
-	int data;
+        char *data;
 	struct Node* next;
-	int *index;
+	int index;
+	char *str;
 } Node;
+
+
+typedef struct history_node
+{
+    char *command;	
+    struct history_t *next;
+} history_t;
+
 
 
 
@@ -133,9 +145,9 @@ typedef struct Node
 #define BUF_FLUSH '\0'
 #define DELIMITER ' '
 
-#define CMD_AND
-#define CMD_OR
 
+#define CMD_OR 1
+#define CMD_AND 1
 
 /* list_list.c */
 Node *add_node_at_start(Node **head_ref, const char *data, int index);
@@ -149,7 +161,7 @@ void free_listint(listint_t *head);
 size_t print_listint(const listint_t *k);
 ssize_t find_index_of_node(Node *head_node, Node *target_node);
 Node *find_node_with_prefix(Node *head_node,
-		char *search_prefix, char next_character);
+		const char *search_prefix, char next_character);
 char **convert_list_to_strings(Node *head_node);
 size_t get_list_length(const Node *head_node);
 
@@ -171,16 +183,16 @@ int custom_str_cmp(char *string1, char *string2);
 /** tokenz.c */
 
 char **strtow(char *str, char d);
-char **custom_strtow2(char *str, char d);
+char **custom_strtow2(char *str);
 
 /* Pplaceholders.c */
 
-void evaluateChainCondition(info_t *data, char *buffer, size_t *position,
+void evaluateChainCondition(infot_t  *data, char *buffer, size_t *position,
 				size_t startIndex, size_t length);
-int check_delimiter(info_t *info, char *buf, int *pos);
+int check_delimiter(char *buf, int *pos);
 int process_variables(struct info *info);
 int update_string(char **str, const char *new_str);
-int update_aliases(info_t *info);
+int update_aliases(infot_t *info);
 
 /* ca-calloc.c */
 
@@ -210,15 +222,15 @@ void customSigintHandler(__attribute__((unused)) int signalNumber);
 
 /* info_handler.c */
 
-void reset_info(info_t *info);
-void initialize_info(info_t *info, char **av);
-void release_info(info_t *info, int free_all);
+void reset_info(infot_t *info);
+void initialize_info(infot_t *info, char **av);
+void release_info(infot_t *info, int free_all);
 
 /* Ggetenv.c */
 
-int set_environment_variable(info_t *info, char *variable, char *value);
-int _unsetenv(info_t *info, char *variable);
-char **duplicate_environ(info_t *info);
+int set_environment_variable(infot_t *info, char *variable, char *value);
+int _unsetenv(infot_t *info, char *variable);
+char **duplicate_environ(infot_t *info);
 
 /* Eexit.c */
 
@@ -229,7 +241,7 @@ char *_strncpy(char *dest, char *src, int n);
 /* er_error1.c */
 
 int _custom_atoi(char *s);
-void print_error(info_t *info, char *error_type);
+void print_error(infot_t *info, char *error_type);
 int custom_print_d(int num, int output_fd);
 char *custom_number_conversion(long int input_num, int target_base,
 		int conversion_flags);
@@ -244,25 +256,25 @@ void _custom_eputs(char *str);
 
 /* Envvirons.c */
 
-int create_env_list(info_t *info);
-int removeEnvironmentVariable(info_t *argumentInfo);
-int _mysetenv(info_t *info);
-char *_getenv(const info_t *info, const char *variable_name);
-int _myenv(info_t *info);
+int create_env_list(infot_t *info);
+int removeEnvironmentVariable(infot_t *argumentInfo);
+int _mysetenv(infot_t *info);
+char *_getenv(const infot_t *info, const char *variable_name);
+int _myenv(infot_t *info);
 
 /* builtsin1.c */
 
 int displayCommandHistory(shellinfo *shellInfo);
 int mimicAlias(shellinfo *shellInfo);
 int display_alias(list_t *alias_node);
-int set_alias(info_t *info, char *alias_str);
-int unset_alias(info_t *info, char *str);
+int set_alias(infot_t *info, char *alias_str);
+int unset_alias(infot_t *info, char *str);
 
 /* builtsin.c */
 
-int _myexit(info_t *info);
-int custom_cd(info_t *info);
-int _myhelp(info_t *info);
+int _myexit(infot_t *info);
+int custom_cd(infot_t *info);
+int _myhelp(infot_t *info);
 
 /* main.c */
 
@@ -273,6 +285,6 @@ int main(int argc, char *argv[]);
 char *generateHistoryFilePath(shellinfo *shellInfo);
 int write_history(shellinfo *shellInfo);
 int readHistoryFromFile(shellinfo *shellInfo);
-int addToHistoryList(info_t *info, char *buffer, int lineCount);
-int renumberHistoryList(info_t *info);
+int addToHistoryList(infot_t *info, char *buffer, int lineCount);
+int renumberHistoryList(infot_t *info);
 #endif

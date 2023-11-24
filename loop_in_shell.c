@@ -7,40 +7,43 @@
  *
  * Return: 0 on successful execution, 1 on error, or error code
  */
-int shellMainLoop(info_t *paramInfo, char **arguments)
+int shellMainLoop(infot_t *paramInfo, char **arguments)
 {
-	ssize_t readStatus = 0;
-	int builtinStatus = 0;
+	char *line = NULL;
+	char **args = NULL;
+	int status = 0;
 
-	while (readStatus != -1 && builtinStatus != -2)
+	if (paramInfo == NULL || arguments == NULL)
 	{
-		void clearInformation(paramInfo);
-		if (isInteractiveMode(paramInfo))
-			printPrompt("$ ");
-		flushOutputBuffer();
-		readStatus = getopt(paramInfo);
-		if (readStatus != -1)
+		fputs("Invalid parameters.\n", stderr);
+		return (1);
+	}
+
+	do
+	{
+		line = shellReadLine(paramInfo);
+
+		if (line == NULL)
 		{
-			clearInformation(paramInfo, arguments);
-			builtinStatus = findBuiltinCommand(paramInfo);
-			if (builtinStatus == -1)
-				findCommand(paramInfo);
+			fputs("Error reading input.\n", stderr);
+			return (1);
 		}
-		else if (isInteractiveMode(paramInfo))
-			printNewLine();
-		freeInformation(paramInfo, 0);
+		args - shellParseLine(line);
+
+		if (args == NULL)
+		{
+			fputs("Error parsing input.\n", stderr);
+			free(line);
+			return (1);
+		}
+		status = shellExecute(args, paramInfo, arguments);
+
+		free(line);
+		free(args);
 	}
-	writeHistory(paramInfo);
-	freeInformation(paramInfo, 1);
-	if (!isInteractiveMode(paramInfo) && paramInfo->status)
-		exit(paramInfo->status);
-	if (builtinStatus == -2)
-	{
-		if (paramInfo->errorNumber == -1)
-			exit(paramInfo->status);
-		exit(paramInfo->errorNumber);
-	}
-	return (builtinStatus);
+	while (status == 0);
+
+	return (status);
 }
 
 /**
@@ -49,7 +52,7 @@ int shellMainLoop(info_t *paramInfo, char **arguments)
  *
  * Return: void
  */
-void executeCommand(info_t *paramInfo)
+void executeCommand(infot_t *paramInfo)
 {
 	pid_t childProcessID;
 
@@ -88,7 +91,7 @@ void executeCommand(info_t *paramInfo)
  * Return: void
  *
  */
-void locateCommand(info_t *info)
+void locateCommand(infot_t *info)
 {
 	char *commandPath = NULL;
 	int argCounter = 0, wordCounter = 0;

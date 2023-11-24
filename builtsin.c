@@ -52,19 +52,20 @@ int custom_cd(info_t *info)
 int _myexit(info_t *info)
 {
 	int status = 0;
-	int exitcheck;
+	int exitcheck = 0;
 
-	if (strcmp(info->args[0], "exit") != 0)
+	if (strcmp((char *)((intptr_t)info->args[0]), "exit") != 0)
 	{
 		return (0);
 	}
 	if (info->args[1] != '\0')
 	{
-		char num_str;		
-		long int num;
+		char num_str;
+	
 
 		num_str = '1';
-		num = strtol(&num_str, NULL, 10);
+
+                strtol(&num_str, NULL, 10);
 
 		if (num_str != '\0')
 		{
